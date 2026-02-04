@@ -60,7 +60,7 @@ class User(models.Model):
     )
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} + {self.last_name}"
 
 
 class Comment(models.Model):
@@ -85,10 +85,11 @@ class Comment(models.Model):
         null=False
     )
 
-    com_rate = models.PositiveSmallIntegerField(
+    com_rate = models.FloatField(
         verbose_name='comment rate',
         help_text='Rate the product from 1 to 5',
         default=0
+        validator = [MinValueValidator(1), MaxValueValidator(5)]
     )
 
     delete = models.BooleanField(
@@ -108,4 +109,4 @@ class Comment(models.Model):
     )
 
     def __str__(self):
-        return f"{self.user.first_name} {self.product.name}"
+        return f"{self.user.first_name} + "about" + {self.product.name}"
