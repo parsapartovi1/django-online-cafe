@@ -51,7 +51,7 @@ class User(models.Model):
 
     create_date = models.DateTimeField(
         verbose_name='creation date',
-        auto_now_add=True   # اصلاح شد
+        auto_now_add=True  
     )
 
     last_update = models.DateTimeField(
@@ -64,13 +64,48 @@ class User(models.Model):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    text = models.TextField()
-    com_rate = models.PositiveSmallIntegerField()
-    delete = models.BooleanField(default=False)
-    create_date = models.DateTimeField(auto_now_add=True)
-    last_update = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='user',
+        help_text='Select the user who wrote the comment'
+    )
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        verbose_name='product',
+        help_text='Select the product related to this comment'
+    )
+
+    text = models.TextField(
+        verbose_name='comment text',
+        help_text='Enter your comment text',
+        blank=False,
+        null=False
+    )
+
+    com_rate = models.PositiveSmallIntegerField(
+        verbose_name='comment rate',
+        help_text='Rate the product from 1 to 5',
+        default=0
+    )
+
+    delete = models.BooleanField(
+        verbose_name='deleted status',
+        help_text='Mark if the comment is deleted',
+        default=False
+    )
+
+    create_date = models.DateTimeField(
+        verbose_name='creation date',
+        auto_now_add=True
+    )
+
+    last_update = models.DateTimeField(
+        verbose_name='last update',
+        auto_now=True
+    )
 
     def __str__(self):
-        return f"{self.user.first_name} → {self.product.name}: {self.text[:30]}"
+        return f"{self.user.first_name} {self.product.name}"
