@@ -81,4 +81,4 @@ class Table(models.Model):
     )
 
     def __str__(self):
-        return f"{self.}"
+        return f"{self.table_number}"
