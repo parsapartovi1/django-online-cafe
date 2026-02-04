@@ -53,6 +53,10 @@ class Category(models.Model):
         return f"{self.type}"
     
 class Table(models.Model):
+    table_number = models.IntegerField(
+        verbose_name="Table number",
+        help_text="Specific Number of Table"
+    )
     capacity = models.IntegerField(
         verbose_name="Capacity",
         help_text="Capacity of tabel"
@@ -76,3 +80,5 @@ class Table(models.Model):
         auto_now_add=True
     )
 
+    def __str__(self):
+        return f"{self.}"
