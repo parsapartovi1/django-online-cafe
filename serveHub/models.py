@@ -19,6 +19,9 @@ class Discount(models.Model):
         help_text="Date of discount record Last Update"
     )
 
+    def __str__(self):
+        return f"{self.amount}"
+
 
 class Category(models.Model):
     type = models.CharField(
@@ -41,3 +44,7 @@ class Category(models.Model):
     discount = models.ForeignKey(
         Discount, on_delete=models.SET_NULL, related_name="category_discount"
     )
+
+    def __str__(self):
+        return f"{self.type}"
+
