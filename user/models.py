@@ -1,5 +1,7 @@
 from django.db import models
 from serveHub.models import Product  
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 class User(models.Model):
     first_name = models.CharField(
@@ -88,8 +90,8 @@ class Comment(models.Model):
     com_rate = models.FloatField(
         verbose_name='comment rate',
         help_text='Rate the product from 1 to 5',
-        default=0
-        validator = [MinValueValidator(1), MaxValueValidator(5)]
+        default=0,
+        validators = [MinValueValidator(1), MaxValueValidator(5)]
     )
 
     delete = models.BooleanField(
@@ -109,4 +111,4 @@ class Comment(models.Model):
     )
 
     def __str__(self):
-        return f"{self.user.first_name} + "about" + {self.product.name}"
+        return f"{self.user.first_name}" + "about" + "{self.product.name}"

@@ -13,16 +13,17 @@ class Discount(models.Model):
     create_date = models.DateTimeField(
         verbose_name="Create Date",
         help_text="Create date of discount record",
-        auto_now=True
+        auto_now_add=True   
     )
     last_update = models.DateTimeField(
         verbose_name="Last Update",
         help_text="Date of discount record Last Update",
-        auto_now_add=True
+        auto_now=True       
     )
+
     def __str__(self):
         return f"{self.amount}"
-<<<<<<< HEAD
+
 
 class Product(models.Model):
     name = models.CharField(
@@ -64,12 +65,12 @@ class Product(models.Model):
         help_text="select discount if available"
     )
     
-    created_date= models.DateTimeField(
+    created_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name="create date"
     )
     
-    last_update= models.DateTimeField(
+    last_update = models.DateTimeField(
         auto_now=True,
         verbose_name="last update"
     )
@@ -82,8 +83,6 @@ class Product(models.Model):
             discount_amount = (self.price * self.discount.amount) / 100
             return self.price - discount_amount
         return self.price
-=======
-
 
 
 class Category(models.Model):
@@ -91,28 +90,33 @@ class Category(models.Model):
         max_length=30,
         verbose_name="Type",
         help_text="Type of Product"
-        )
-    discription = models.TextField(
-        verbose_name="Discription",
-        help_text="Discription of Category"
+    )
+    description = models.TextField(   
+        verbose_name="Description",
+        help_text="Description of Category"
     )
     create_date = models.DateTimeField(
         verbose_name="Create Date",
         help_text="Create date of Category",
-        auto_now=True
+        auto_now_add=True   
     )
     last_update = models.DateTimeField(
         verbose_name="Last Update",
         help_text="Date of Category Last Update",
-        auto_now_add=True
+        auto_now=True       
     )
     discount = models.ForeignKey(
-        Discount, on_delete=models.SET_NULL, related_name="category_discount"
+        Discount,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="category_discount"
     )
 
     def __str__(self):
         return f"{self.type}"
-    
+
+
 class Table(models.Model):
     table_number = models.IntegerField(
         verbose_name="Table number",
@@ -120,11 +124,11 @@ class Table(models.Model):
     )
     capacity = models.IntegerField(
         verbose_name="Capacity",
-        help_text="Capacity of tabel"
+        help_text="Capacity of table"
     )
     duration = models.TimeField(
         verbose_name="Duration",
-        help_text="Duration of tabel usage"
+        help_text="Duration of table usage"
     )
     price = models.IntegerField(
         verbose_name="Price",
@@ -133,14 +137,13 @@ class Table(models.Model):
     create_date = models.DateTimeField(
         verbose_name="Create Date",
         help_text="Create date of a table",
-        auto_now=True
+        auto_now_add=True   
     )
     last_update = models.DateTimeField(
         verbose_name="Last Update",
         help_text="last table record update",
-        auto_now_add=True
+        auto_now=True       
     )
 
     def __str__(self):
         return f"{self.table_number}"
->>>>>>> origin/developer
