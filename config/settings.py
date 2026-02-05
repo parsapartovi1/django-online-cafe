@@ -30,6 +30,12 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
+JAZMIN_SETTINGS = {
+    "order_with_respect_to": ["user","serveHub","payment"]
+}
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,8 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user',
-    'payment',
-    'serveHub'
+    'serveHub',
+    'payment'
+
 ]
 
 MIDDLEWARE = [

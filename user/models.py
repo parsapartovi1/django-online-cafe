@@ -1,5 +1,5 @@
 from django.db import models
-from serveHub.models import Product  
+from serveHub.models import Product
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -60,7 +60,8 @@ class User(models.Model):
         verbose_name='last update',
         auto_now=True
     )
-
+    class Meta:
+        verbose_name = "1. user"
     def __str__(self):
         return f"{self.first_name} + {self.last_name}"
 
@@ -109,6 +110,9 @@ class Comment(models.Model):
         verbose_name='last update',
         auto_now=True
     )
+
+    class Meta:
+        verbose_name = "2. comment"
 
     def __str__(self):
         return f"{self.user.first_name}" + "about" + "{self.product.name}"
