@@ -20,7 +20,8 @@ class Discount(models.Model):
         help_text="Date of discount record Last Update",
         auto_now_add=True
     )
-
+    def __str__(self):
+        return f"{self.amount}"
 <<<<<<< HEAD
 
 class Product(models.Model):
@@ -82,8 +83,7 @@ class Product(models.Model):
             return self.price - discount_amount
         return self.price
 =======
-    def __str__(self):
-        return f"{self.amount}"
+
 
 
 class Category(models.Model):
