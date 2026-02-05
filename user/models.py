@@ -1,10 +1,112 @@
 from django.db import models
-from django.db.models import BooleanField
+from serveHub.models import Product  
+
+class User(models.Model):
+    first_name = models.CharField(
+        max_length=24,
+        verbose_name='first name',
+        help_text='Enter your first name',
+        blank=False,
+        null=False
+    )
+
+    last_name = models.CharField(
+        max_length=24,
+        verbose_name='last name',
+        help_text='Enter your last name',
+        blank=False,
+        null=False
+    )
+
+    number = models.CharField(
+        max_length=11,
+        verbose_name='number',
+        help_text='Enter your number',
+        blank=False,
+        null=False
+    )
+
+    password = models.CharField(
+        max_length=24,
+        verbose_name='password',
+        help_text='Enter your password',
+        blank=False,
+        null=False
+    )
+
+    user_rate = models.FloatField(
+        verbose_name='user rate',
+        default=0
+    )
+
+    is_staff = models.BooleanField(
+        verbose_name='staff status',
+        default=False
+    )
+
+    user_presence = models.BooleanField(
+        verbose_name='user presence',
+        default=False
+    )
+
+    create_date = models.DateTimeField(
+        verbose_name='creation date',
+        auto_now_add=True  
+    )
+
+    last_update = models.DateTimeField(
+        verbose_name='last update',
+        auto_now=True
+    )
+
+    def __str__(self):
+        return f"{self.first_name} + {self.last_name}"
 
 
-# Create your models here.
+class Comment(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='user',
+        help_text='Select the user who wrote the comment'
+    )
 
-#user, comment
-#comment --> alireza
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        verbose_name='product',
+        help_text='Select the product related to this comment'
+    )
 
+    text = models.TextField(
+        verbose_name='comment text',
+        help_text='Enter your comment text',
+        blank=False,
+        null=False
+    )
 
+    com_rate = models.FloatField(
+        verbose_name='comment rate',
+        help_text='Rate the product from 1 to 5',
+        default=0
+        validator = [MinValueValidator(1), MaxValueValidator(5)]
+    )
+
+    delete = models.BooleanField(
+        verbose_name='deleted status',
+        help_text='Mark if the comment is deleted',
+        default=False
+    )
+
+    create_date = models.DateTimeField(
+        verbose_name='creation date',
+        auto_now_add=True
+    )
+
+    last_update = models.DateTimeField(
+        verbose_name='last update',
+        auto_now=True
+    )
+
+    def __str__(self):
+        return f"{self.user.first_name} + "about" + {self.product.name}"
