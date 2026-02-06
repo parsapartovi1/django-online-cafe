@@ -1,9 +1,7 @@
-from tokenize import Comment
-
 from django.db import models
 from serveHub.models import Product
 from django.core.validators import MinValueValidator, MaxValueValidator
-from choices import WeekDays
+from .choices import WeekDays
 
 class User(models.Model):
     first_name = models.CharField(
@@ -152,6 +150,8 @@ class Reply(models.Model):
         verbose_name='last update',
         auto_now=True
     )
+    class Meta:
+        verbose_name = "3. Reply"
 
     def __str__(self):
         return f"{self.user.first_name}"
@@ -181,6 +181,9 @@ class WorkingShift(models.Model):
         verbose_name='closed date',
         help_text='Enter your close date'
     )
+
+    class Meta:
+        verbose_name = "4. Working Shift"
 
     def __str__(self):
         return str(self.weekdays) + "-" + str(self.opening_date) + "-" + str(self.closed_date)
