@@ -1,7 +1,9 @@
+from tokenize import Comment
+
 from django.db import models
 from serveHub.models import Product
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from choices import WeekDays
 
 class User(models.Model):
     first_name = models.CharField(
@@ -116,3 +118,69 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name}" + "about" + "{self.product.name}"
+
+
+class Reply(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='user',
+    )
+
+    comment = models.OneToOneField(
+        Comment,
+        on_delete=models.CASCADE,
+        verbose_name='comment',
+    )
+
+    text = models.TextField(
+        verbose_name='reply text',
+        help_text='Enter your reply text'
+    )
+
+    is_staff = models.BooleanField(
+        verbose_name='staff status',
+        default=False
+    )
+
+    create_date = models.DateTimeField(
+        verbose_name='creation date',
+        auto_now_add=True
+    )
+
+    last_update = models.DateTimeField(
+        verbose_name='last update',
+        auto_now=True
+    )
+
+    def __str__(self):
+        return f"{self.user.first_name}"
+
+
+
+class WorkingShift(models.Model):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='user'
+    )
+
+    weekdays = models.CharField(
+            max_length=24,
+            choices=WeekDays.choices,
+            verbose_name='weekday',
+    )
+
+    opening_date = models.DateField(
+        verbose_name='opening date',
+        help_text='Enter your opening date'
+    )
+
+    closed_date = models.DateField(
+        verbose_name='closed date',
+        help_text='Enter your close date'
+    )
+
+    def __str__(self):
+        return str(self.weekdays) + "-" + str(self.opening_date) + "-" + str(self.closed_date)
