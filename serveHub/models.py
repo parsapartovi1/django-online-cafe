@@ -77,23 +77,28 @@ class Table(models.Model):
         verbose_name="Table number",
         help_text="Specific Number of Table"
     )
+
     capacity = models.IntegerField(
         verbose_name="Capacity",
         help_text="Capacity of table"
     )
+
     duration = models.TimeField(
         verbose_name="Duration",
         help_text="Duration of table usage"
     )
+
     price = models.IntegerField(
         verbose_name="Price",
         help_text="Price of a Table"
     )
+
     create_date = models.DateTimeField(
         verbose_name="Create Date",
         help_text="Create date of a table",
         auto_now_add=True
     )
+
     last_update = models.DateTimeField(
         verbose_name="Last Update",
         help_text="last table record update",
@@ -113,15 +118,18 @@ class Discount(models.Model):
         verbose_name="Amount",
         help_text="Amount of Discount"
     )
+
     duration = models.DateTimeField(
         verbose_name="Duration",
         help_text="Duration of Discount"
     )
+
     create_date = models.DateTimeField(
         verbose_name="Create Date",
         help_text="Create date of discount record",
         auto_now_add=True   
     )
+
     last_update = models.DateTimeField(
         verbose_name="Last Update",
         help_text="Date of discount record Last Update",
@@ -131,7 +139,7 @@ class Discount(models.Model):
     class Meta:
         verbose_name = "4. Discount"
     def __str__(self):
-        return f"{self.amount}"
+        return f"{self.amount} % for {self.duration}"
 
 
 

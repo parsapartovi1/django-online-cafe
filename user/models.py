@@ -63,7 +63,7 @@ class User(models.Model):
     class Meta:
         verbose_name = "1. user"
     def __str__(self):
-        return f"{self.first_name} + {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
 
 class Comment(models.Model):
@@ -115,7 +115,7 @@ class Comment(models.Model):
         verbose_name = "2. comment"
 
     def __str__(self):
-        return f"{self.user.first_name}" + "about" + "{self.product.name}"
+        return f"{self.user.first_name}  about  {self.product.name}"
 
 
 class Reply(models.Model):
@@ -154,12 +154,11 @@ class Reply(models.Model):
         verbose_name = "3. Reply"
 
     def __str__(self):
-        return f"{self.user.first_name}"
+        return f"{self.user.first_name} to {self.comment.user.first_name}"
 
 
 
 class WorkingShift(models.Model):
-
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -172,12 +171,12 @@ class WorkingShift(models.Model):
             verbose_name='weekday',
     )
 
-    opening_date = models.DateField(
+    opening_date = models.DateTimeField(
         verbose_name='opening date',
         help_text='Enter your opening date'
     )
 
-    closed_date = models.DateField(
+    closed_date = models.DateTimeField(
         verbose_name='closed date',
         help_text='Enter your close date'
     )

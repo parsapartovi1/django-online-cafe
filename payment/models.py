@@ -1,14 +1,13 @@
-from django.db import models
 
 # Create your models here.
-#only payment transaction, discount and orders .
+
+
+#only payment transaction and orders .
 # orders ---> parsa
 from django.db import models
-# Create your models here.
 from user.models import User
 from serveHub.models import Product
 from serveHub.models import Table
-
 
 class Order(models.Model):
     user = models.ForeignKey(
@@ -37,16 +36,16 @@ class Order(models.Model):
 
     total_amount = models.FloatField(
         verbose_name='total amount',
-        default=0.0
+
     )
 
     order_status = models.BooleanField(
-        verbose_name='status',
-        default=False
+        verbose_name='delivered',
+
     )
 
     cancellation = models.BooleanField(
-        verbose_name='cancellation',
+        verbose_name='cancelled',
         default=False
     )
 
@@ -64,7 +63,10 @@ class Order(models.Model):
         verbose_name = "1. Order"
 
     def __str__(self):
-        return str(self.user) + " " + str(self.total_amount) +  str(self.order_status)
+        return f"{self.user} - {self.product.name} - Table {self.table.table_number}"
+
+
+
 
 class Pay(models.Model):
     user = models.ForeignKey(
@@ -73,8 +75,16 @@ class Pay(models.Model):
         verbose_name='user'
     )
 
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='payment',
+        null = True,
+        blank = True
+    )
+
     status = models.BooleanField(
-        verbose_name='status',
+        verbose_name='Paid',
         default=False
     )
 
