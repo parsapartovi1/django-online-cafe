@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>پروفایل</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+<body>
+    <h2>پروفایل کاربری</h2>
+
+    <p>خوش آمدید، {{ user.first_name }} {{ user.last_name }}</p>
+
+    <h3>نظرات شما:</h3>
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment.text }}  
+                <a href="{% url 'add_reply' comment.id %}">پاسخ دادن</a></li>
+        {% empty %}
+            <li>شما هیچ نظری ارسال نکرده‌اید.</li>
+        {% endfor %}
+    </ul>
+
+    <br><br>
+    <a href="{% url 'user_logout' %}">خروج از حساب</a>
+</body>
+</html>
