@@ -36,6 +36,15 @@ JAZMIN_SETTINGS = {
 }
 
 
+
+LOCALE_APPS=[
+    'user',
+    'serveHub',
+    'payment'
+]
+
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,10 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user',
-    'serveHub',
-    'payment'
-
+    *LOCALE_APPS,
 ]
 
 MIDDLEWARE = [

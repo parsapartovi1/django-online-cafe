@@ -95,7 +95,7 @@ class Comment(models.Model):
         validators = [MinValueValidator(1), MaxValueValidator(5)]
     )
 
-    delete = models.BooleanField(
+    is_delete = models.BooleanField(
         verbose_name='deleted status',
         help_text='Mark if the comment is deleted',
         default=False
