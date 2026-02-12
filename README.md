@@ -32,8 +32,8 @@ pip --version
 git --version
 
 📂 2. Clone the Repository
-git clone https://github.com/your-username/online-cafe.git
-cd online-cafe
+git clone git@github.com:parsapartovi1/django-online-cafe.git
+cd django-online-cafe
 
 🐍 3. Create Virtual Environment
 On Mac/Linux:
