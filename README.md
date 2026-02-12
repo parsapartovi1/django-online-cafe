@@ -11,6 +11,7 @@ A Django-based café management system with modular apps:
 🍽 servehub → Tables, categories, products, discounts
 
 🚀 0 → 100 Setup Guide
+---
 📌 1. Prerequisites
 
 Make sure you have:
