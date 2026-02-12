@@ -111,14 +111,14 @@ DEBUG = os.getenv("DEBUG") == "True"
 Option A: SQLite (Simple Development)
 
 In settings.py:
-
+```
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+```
 
 Then:
 ```
@@ -132,7 +132,7 @@ CREATE DATABASE cafe_db;
 ```
 
 Update settings.py:
-
+```
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -143,7 +143,7 @@ DATABASES = {
         'PORT': os.getenv("DB_PORT"),
     }
 }
-
+```
 
 Then migrate:
 ```
@@ -198,13 +198,15 @@ INSTALLED_APPS = [
 ---
 
 If new models are added:
-
+```
 python manage.py makemigrations
 python manage.py migrate
-
+```
 ▶️ 11. Run the Server
+---
+```
 python manage.py runserver
-
+```
 
 Open:
 
@@ -220,11 +222,16 @@ http://127.0.0.1:8000/admin/
 git checkout -b feature/add-discount-logic
 
 💾 Commit Changes
+```
 git add .
 git commit -m "Add discount calculation logic"
+```
 
 🚀 Push to GitHub
-git push origin feature/add-discount-logic
+```
+git push origin feature/add-discount-logic  
+```
+(your own branch)
 
 🧪 Running Tests
 
