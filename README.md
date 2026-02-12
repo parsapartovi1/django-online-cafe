@@ -51,8 +51,9 @@ You should now see:
 (venv)
 
 📦 4. Install Dependencies
+'''
 pip install -r requirements.txt
-
+'''
 
 If requirements.txt doesn’t exist yet:
 
