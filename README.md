@@ -273,19 +273,9 @@ MIT License
 
 👨‍💻 Author
 
-Your Name
-GitHub: https://github.com/your-username
+Parsa
+Ebrahim
+Maryam
+Alireza
 
-If you’d like, I can now:
 
-🔥 Write a professional production-ready README
-
-🏗 Design a clean architecture diagram
-
-🧠 Help you refactor into enterprise-level structure
-
-🚀 Guide you to deploy on Render / Railway / VPS
-
-🧾 Help you design proper ERD for your database
-
-Just tell me your next step.
