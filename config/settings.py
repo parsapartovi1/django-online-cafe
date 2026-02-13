@@ -27,13 +27,22 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+#
 # Application definition
 
 
 JAZMIN_SETTINGS = {
     "order_with_respect_to": ["user","serveHub","payment"]
 }
+
+
+
+LOCALE_APPS=[
+    'user',
+    'serveHub',
+    'payment'
+]
+
 
 
 INSTALLED_APPS = [
@@ -43,10 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user',
-    'serveHub',
-    'payment'
-
+    *LOCALE_APPS,
 ]
 
 MIDDLEWARE = [
