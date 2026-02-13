@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if object %}Edit{% else %}Add{% endif %} Product</title>
+</head>
+<body>
+    <h1>{% if object %}Edit Product: {{ object.name }}{% else %}Add New Product{% endif %}</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <p>
+            <label>Product Name:</label><br>
+            <input type="text" name="name" value="{{ object.name|default:'' }}" required>
+        </p>
+        
+        <p>
+            <label>Price ($):</label><br>
+            <input type="number" name="price" step="0.01" value="{{ object.price|default:'' }}" required>
+        </p>
+        
+        <p>
+            <label>Category:</label><br>
+            <select name="category" required>
+                <option value="">-- Select Category --</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}" {% if object.category.id == category.id %}selected{% endif %}>
+                    {{ category.type }}
+                </option>
+                {% endfor %}
+            </select>
+        </p>
+        
+        <p>
+            <label>Quantity:</label><br>
+            <input type="number" name="quantity" value="{{ object.quantity|default:'1' }}" required min="1" max="20">
+        </p>
+        
+        <p>
+            <label>Product Image:</label><br>
+            {% if object.image %}
+                <img src="{{ object.image.url }}" alt="{{ object.name }}" style="max-width: 200px;"><br>
+                <small>Current image: {{ object.image.name }}</small><br>
+            {% endif %}
+            <input type="file" name="image" accept="image/*">
+            <br><small>Leave empty to keep current image</small>
+        </p>
+        
+        <p>
+            <button type="submit">Save Product</button>
+            <a href="/products/">Cancel</a>
+        </p>
+    </form>
+</body>
+</html>

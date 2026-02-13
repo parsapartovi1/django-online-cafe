@@ -1,0 +1,47 @@
+<!-- templates/serveHub/table_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table List</title>
+</head>
+<body>
+    <h1>Table List</h1>
+    
+    <a href="/tables/new/">Add New Table</a>
+    <br><br>
+    
+    {% if tables %}
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>ID</th>
+            <th>Table Number</th>
+            <th>Capacity</th>
+            <th>Duration</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        {% for table in tables %}
+        <tr>
+            <td>{{ table.id }}</td>
+            <td>Table {{ table.table_number }}</td>
+            <td>{{ table.capacity }} persons</td>
+            <td>{{ table.duration }}</td>
+            <td>${{ table.price }}</td>
+            <td>
+                <a href="/tables/{{ table.id }}/edit/">✏️ Edit</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No tables found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No tables available.</p>
+    {% endif %}
+    
+    <br>
+    <a href="/">← Back to Home</a>
+</body>
+</html>
