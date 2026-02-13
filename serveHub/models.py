@@ -11,6 +11,14 @@ class Product(models.Model):
         null=False
     )
 
+    image = models.ImageField(
+        verbose_name="Product Image",
+        help_text="upload product image",
+        upload_to='products/',
+        blank=True,
+        null=True
+    )
+
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -37,7 +45,7 @@ class Product(models.Model):
         verbose_name="Quantity",
         help_text="Quantity of product",
         validators=[MinValueValidator(1) , MaxValueValidator(20)],
-        default= ""
+        default= 1
     )
 
     discount = models.ForeignKey(
@@ -177,5 +185,3 @@ class Category(models.Model):
 
     def __str__(self):
         return f"{self.type}"
-
-
