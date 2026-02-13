@@ -1,0 +1,14 @@
+<h2>Your Payments</h2>
+<a href="{% url 'create_payment' %}">Add Payment</a>
+
+<ul>
+{% for pay in payments %}
+    <li>
+        Order #{{ pay.order.id if pay.order else "N/A" }} -
+        {% if pay.status %}Paid{% else %}Unpaid{% endif %} -
+        {{ pay.create_date }}
+    </li>
+{% empty %}
+    <li>No payments found.</li>
+{% endfor %}
+</ul>

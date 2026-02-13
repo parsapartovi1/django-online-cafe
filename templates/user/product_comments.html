@@ -1,0 +1,6 @@
+<h2>Comments for {{ product.name }}</h2>
+{% for comment in comments %}
+    <p><strong>{{ comment.user.first_name }}:</strong> {{ comment.text }} ({{ comment.com_rate }}/5)</p>
+{% empty %}
+    <p>No comments yet.</p>
+{% endfor %}

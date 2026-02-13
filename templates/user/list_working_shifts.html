@@ -1,0 +1,11 @@
+<h2>Your Working Shifts</h2>
+
+<a href="{% url 'create_working_shift' %}">Add New Shift</a>
+
+<ul>
+{% for shift in shifts %}
+    <li>{{ shift.weekdays }}: {{ shift.opening_date }} - {{ shift.closed_date }}</li>
+{% empty %}
+    <li>No shifts found.</li>
+{% endfor %}
+</ul>

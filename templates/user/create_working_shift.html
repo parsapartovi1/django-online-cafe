@@ -1,0 +1,29 @@
+<h2>Create Working Shift</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Weekday:</label>
+    <label>
+        <select name="weekdays">
+            <option value="MON">Monday</option>
+            <option value="TUE">Tuesday</option>
+            <option value="WED">Wednesday</option>
+            <option value="THU">Thursday</option>
+            <option value="FRI">Friday</option>
+            <option value="SAT">Saturday</option>
+            <option value="SUN">Sunday</option>
+        </select>
+    </label><br>
+
+    <label>Opening Date:</label>
+    <label>
+        <input type="datetime-local" name="opening_date">
+    </label><br>
+
+    <label>Closed Date:</label>
+    <label>
+        <input type="datetime-local" name="closed_date">
+    </label><br>
+
+    <button type="submit">Create Shift</button>
+</form>
