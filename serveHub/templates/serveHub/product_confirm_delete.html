@@ -1,0 +1,18 @@
+<!-- templates/serveHub/product_confirm_delete.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Product</title>
+</head>
+<body>
+    <h1>Delete Product</h1>
+    
+    <p>Are you sure you want to delete <strong>"{{ object.name }}"</strong>?</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+        <a href="/products/">Cancel</a>
+    </form>
+</body>
+</html>
