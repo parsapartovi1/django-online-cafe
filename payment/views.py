@@ -1,3 +1,17 @@
+
+from django.views.generic import ListView, DetailView
+from .models import Order
+
+
+class OrderList(ListView):
+    model = Order
+    template_name = "order_list.html"
+
+
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = "order_detail.html"
+
 # Create your views here.
 
 
@@ -16,7 +30,7 @@ def create_payment(request):
 
         order = get_object_or_404(Order, id=order_id)
 
-        # Convert status to boolean
+
         paid = True if status == "1" else False
 
         Pay.objects.create(
@@ -27,10 +41,9 @@ def create_payment(request):
 
         return redirect('list_payments')
 
-    # GET → show form
-    orders = Order.objects.all()  # Optionally filter for user's orders
-    return render(request, 'payment/create_payment.html', {'orders': orders})
 
+    orders = Order.objects.all() 
+    return render(request, 'payment/create_payment.html', {'orders': orders})
 
 
 def list_payments(request):

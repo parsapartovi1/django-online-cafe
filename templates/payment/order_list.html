@@ -1,0 +1,7 @@
+<h1>Order List</h1>
+<ul>
+    {% for order in order_list %}
+    <li><a href="{% url 'order-detail' order.id %}">Name: {{ order.user }} - Order: {{ order.product }} - Table No:
+            {{ order.table }}</a></li>
+    {% endfor %}
+</ul>

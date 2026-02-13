@@ -1,0 +1,7 @@
+<h1>Discount List</h1>
+<ul>
+    {% for discount in discount_list %}
+    <li><a href="{% url 'discount-detail' discount.id %}">{{ discount.amount }} % </a>
+    </li>
+    {% endfor %}
+</ul>
