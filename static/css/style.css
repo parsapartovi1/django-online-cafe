@@ -1,0 +1,75 @@
+.hero-section {
+    height: 90vh;
+    background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93") center/cover no-repeat;
+}
+
+.navbar .nav-link {
+    transition: 0.4s;
+}
+
+.navbar .nav-link:hover {
+    color: darkorange !important;
+}
+
+
+.music-player {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #111;
+    padding: 15px;
+    border-radius: 70px;
+    text-align: center;
+    font-size: 14px;
+    width: 200px;
+    height:240px ;
+    color: darkorange;
+}
+
+.music-player * {
+    font-size: 15px !important;
+}
+
+
+.cover {
+    width: 90px;
+    height: 90px;
+    border-radius: 70%;
+    border: 1px solid darkgray;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+
+.controls button {
+    background: darkorange;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+
+
+body {
+    background-image: url('/static/images/background/7.jpg'); /* change path */
+    background-size: cover;        /* fills whole screen */
+    background-position: center;   /* keeps it centered */
+    background-repeat: no-repeat;  /* no repeating */
+    background-attachment: fixed;  /* optional smooth effect */
+}
+.navbar {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+
+.features-section {
+    background-color: #000;
+    color: white;
+}
+
+.features-section h5 {
+    color: darkorange;
+}
