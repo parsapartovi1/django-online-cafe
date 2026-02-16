@@ -1,0 +1,13 @@
+<h1>Order Detail</h1>
+<p>Name: {{ order.user }}</p>
+<p>Order: {{ order.product }}</p>
+<p>Table No: {{ order.table }}</p>
+<p>Order Title: {{ order.title }}</p>
+<p>Order Price: {{ order.total_amount }} Rial</p>
+<p>Order Status:
+    {% if order_status == false %}
+    Not Deliverd
+    {% else %}
+    Deliverd
+    {% endif %}
+</p>

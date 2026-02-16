@@ -1,7 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
-
 class Product(models.Model):
     name = models.CharField(
         max_length=50,
@@ -9,6 +8,14 @@ class Product(models.Model):
         help_text="enter product name",
         blank=False,
         null=False
+    )
+
+    image = models.ImageField(
+        verbose_name="Product Image",
+        help_text="upload product image",
+        upload_to='products_img/',
+        blank=True,
+        null=True
     )
 
     price = models.DecimalField(
@@ -37,7 +44,7 @@ class Product(models.Model):
         verbose_name="Quantity",
         help_text="Quantity of product",
         validators=[MinValueValidator(1) , MaxValueValidator(20)],
-        default= ""
+        default=1
     )
 
     discount = models.ForeignKey(
@@ -59,9 +66,9 @@ class Product(models.Model):
         verbose_name="last update"
     )
 
-
     class Meta:
         verbose_name = "2. Product"
+    
     def __str__(self):
         return self.name
 
@@ -112,7 +119,6 @@ class Table(models.Model):
         return f"{self.table_number}"
 
 
-
 class Discount(models.Model):
     amount = models.IntegerField(
         verbose_name="Amount",
@@ -138,9 +144,9 @@ class Discount(models.Model):
 
     class Meta:
         verbose_name = "4. Discount"
+    
     def __str__(self):
         return f"{self.amount} % for {self.duration}"
-
 
 
 class Category(models.Model):
@@ -172,10 +178,9 @@ class Category(models.Model):
         help_text="Date of Category Last Update",
         auto_now=True
     )
+    
     class Meta:
         verbose_name = "3. Category"
 
     def __str__(self):
         return f"{self.type}"
-
-

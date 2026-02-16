@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}خانه | Mariba Coffee{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section text-white d-flex align-items-center justify-content-center text-center">
+    <div>
+        <h1 class="display-3 fw-bold mb-3">
+            Mariba Coffee
+        </h1>
+
+        <p class="lead mb-4">
+            تجربه‌ای متفاوت از طعم واقعی قهوه
+        </p>
+
+        <a href="{% url 'product_list' %}" class="btn btn-warning btn-lg px-5">
+            مشاهده منو
+        </a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 text-white" style="background-color: #000;">
+    <div class="container text-center">
+
+        <h2 class="mb-5 fw-bold">ما قهوه ماریبا هستیم</h2>
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <h5 class="fw-bold">☕ کیفیت بالا</h5>
+                <p>سرو قهوه فوق‌العاده، کیک‌ها و شیرینی‌های تازه و ارائه بهترین سرویس در فضاهای زنده و به‌یادماندنی از جمله ارزش‌های ما در مجموعه‌ قهوه ماریبا است. همه هدف ما، تلاش ما و امید ما ارائه بهترین محصول با بهترین قیمت و کیفیت است.</p>
+            </div>
+
+            <div class="col-md-3">
+                <h5 class="fw-bold">⚡ سفارش سریع</h5>
+                <p>مدیریت آنلاین میز و محصولات</p>
+            </div>
+
+            <div class="col-md-3">
+                <h5 class="fw-bold">🎯 تخفیف‌های ویژه</h5>
+                <p>دریافت پیشنهادهای خاص و فصلی</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}
+
