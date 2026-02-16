@@ -1,6 +1,0 @@
-<h1>Category List</h1>
-<ul>
-    {% for category in category_list %}
-    <li><a href="{% url 'category-detail' category.id %}">{{ category.type }} - {{ category.description }}</a></li>
-    {% endfor %}
-</ul>

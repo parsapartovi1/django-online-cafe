@@ -27,7 +27,7 @@ class CategoryDetailView(DetailView):
 
 
 def home(request):
-    return render(request, "serveHub/home.html")
+    return render(request, "home.html")
 
 
 class ProductListView(View):

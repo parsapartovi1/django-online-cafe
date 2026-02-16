@@ -9,11 +9,12 @@ urlpatterns = [
     path('logout/', UserLogoutView.as_view(), name='user_logout'),
 
 
-    path('product/<int:product_id>/comment/', views.create_comment, name='create_comment'),
+    path('user/<int:product_id>/CreateComment/', views.create_comment, name='create_comment'),
 
 
-    path('comment/<int:comment_id>/add_reply/', AddReply.as_view(), name='add_reply'),
+    path('user/<int:comment_id>/add_reply/', AddReply.as_view(), name='add_reply'),
 
     path('working_shift/create/', views.create_working_shift, name='create_working_shift'),
     path('working_shift/list/', views.list_working_shifts, name='list_working_shifts'),
+
 ]

@@ -1,7 +1,51 @@
-<h2>Comment on {{ product.name }}</h2>
-<form method="post">
-    {% csrf_token %}
-    <textarea name="text" placeholder="Write your comment"></textarea><br>
-    <input type="number" name="com_rate" min="1" max="5" step="0.1" placeholder="Rate 1-5"><br>
-    <button type="submit">Submit</button>
-</form>
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="mb-5 text-center fw-bold">
+        نظرات برای {{ product.name }}
+    </h2>
+
+    {% if comments %}
+        <div class="row">
+            {% for comment in comments %}
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm h-100 border-0">
+                        <div class="card-body">
+
+                            <h6 class="fw-bold mb-2">
+                                👤 {{ comment.user.username }}
+                            </h6>
+
+                            <p class="text-muted small mb-2">
+                                ⭐ امتیاز: {{ comment.com_rate }} / 5
+                            </p>
+
+                            <p>
+                                {{ comment.text }}
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center">
+            <p class="text-muted">هنوز نظری ثبت نشده است.</p>
+        </div>
+    {% endif %}
+
+    <!-- Back Button -->
+    <div class="text-center mt-4">
+        <a href="{% url 'product_detail' product.id %}"
+           class="btn btn-outline-dark">
+            بازگشت به محصول
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

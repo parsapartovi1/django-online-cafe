@@ -26,6 +26,7 @@ urlpatterns = [
     path("user/", include("user.urls")),
     path("serveHub/", include("serveHub.urls")),
     path("payment/", include("payment.urls")),
+    path('', include('user.urls')),
 
     path('admin/', admin.site.urls),
     path('', include('serveHub.urls')),
@@ -34,3 +35,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import Comment, Product
 from django.http import HttpResponseBadRequest
 from .models import WorkingShift
-
+from django.contrib.auth.decorators import login_required
 class UserRegisterView(View):
     def get(self, request):
         return render(request, 'user/register.html')
@@ -181,8 +181,9 @@ def create_working_shift(request):
 
     return render(request, 'user/create_working_shift.html')
 
-
+@login_required
 def list_working_shifts(request):
-    shifts = WorkingShift.objects.filter(user=request.user).order_by('opening_date')
-    return render(request, 'user/list_working_shifts.html', {'shifts': shifts})
+    shifts = WorkingShift.objects.filter(user=request.user)
+    return render(request, 'user/working_shift_list.html', {'shifts': shifts})
+
 

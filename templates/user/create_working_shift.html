@@ -1,29 +1,55 @@
-<h2>Create Working Shift</h2>
+{% extends "base.html" %}
+{% load static %}
 
-<form method="post">
-    {% csrf_token %}
-    <label>Weekday:</label>
-    <label>
-        <select name="weekdays">
-            <option value="MON">Monday</option>
-            <option value="TUE">Tuesday</option>
-            <option value="WED">Wednesday</option>
-            <option value="THU">Thursday</option>
-            <option value="FRI">Friday</option>
-            <option value="SAT">Saturday</option>
-            <option value="SUN">Sunday</option>
-        </select>
-    </label><br>
+{% block content %}
+<div class="container py-5">
 
-    <label>Opening Date:</label>
-    <label>
-        <input type="datetime-local" name="opening_date">
-    </label><br>
+    <h2 class="mb-4 text-center fw-bold">شیفت‌های کاری کاربران</h2>
 
-    <label>Closed Date:</label>
-    <label>
-        <input type="datetime-local" name="closed_date">
-    </label><br>
+    <div class="text-end mb-3">
+        <a href="{% url 'user:create_working_shift' %}" class="btn btn-dark">
+            + اضافه کردن شیفت
+        </a>
+    </div>
 
-    <button type="submit">Create Shift</button>
-</form>
+    {% if shifts %}
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>کاربر</th>
+                        <th>روز هفته</th>
+                        <th>زمان شروع</th>
+                        <th>زمان پایان</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shift in shifts %}
+                        <tr>
+                            <td>{{ shift.user.username }}</td>
+                            <td>{{ shift.weekdays }}</td>
+                            <td>{{ shift.opening_date|date:"Y-m-d H:i" }}</td>
+                            <td>{{ shift.closed_date|date:"Y-m-d H:i" }}</td>
+                            <td>
+                                <a href="{% url 'user:edit_working_shift' shift.id %}" class="btn btn-sm btn-outline-warning me-1">
+                                    ویرایش
+                                </a>
+                                <a href="{% url 'user:delete_working_shift' shift.id %}" class="btn btn-sm btn-outline-danger">
+                                    حذف
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center text-muted mt-5">
+            هیچ شیفت کاری ثبت نشده است.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
