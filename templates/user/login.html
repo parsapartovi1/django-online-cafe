@@ -1,37 +1,110 @@
-{% load static %}
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ورود به حساب</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h2>ورود به حساب کاربری</h2>
-        
-        <form method="post" autocomplete="off"> 
+{% block title %}ورود | Mariba Coffee{% endblock %}
+
+{% block content %}
+
+
+<style>
+    nav.navbar {
+        background: #000 !important;
+        backdrop-filter: none !important;
+        background-image: none !important;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+</style>
+
+
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/font-face.css" rel="stylesheet">
+<style>
+    * {
+        font-family: 'Vazir', sans-serif !important;
+    }
+    label {
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+    ::placeholder {
+        font-family: 'Vazir', sans-serif !important;
+        font-size: 0.9rem;
+    }
+    .input-group-text {
+        font-family: 'Vazir', sans-serif !important;
+        font-size: 1rem;
+    }
+</style>
+
+<section class="d-flex justify-content-center align-items-center"
+         style="
+            min-height: 100vh;
+            background-image: url('/static/images/background/12.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+         ">
+
+    <div class="p-4 shadow-lg"
+         style="
+            width: 380px;
+            background: rgba(0, 0, 0, 0.40);
+            backdrop-filter: blur(14px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #fff;
+            box-shadow: 0 0 35px rgba(0,0,0,0.55);
+         ">
+
+        <h3 class="text-center mb-4 fw-bold" style="letter-spacing: 1px;">
+            ورود به حساب
+        </h3>
+
+        <form method="POST">
             {% csrf_token %}
+
             
-            <div class="form-group">
-                <label for="number">شماره تلفن:</label>
-                <input type="text" name="number" id="number" placeholder="شماره تلفن خود را وارد کنید" required autocomplete="tel"> 
+            <div class="mb-3">
+                <label class="form-label">شماره تماس</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-warning border-secondary">
+                        <i class="bi bi-phone"></i>
+                    </span>
+                    <input type="text"
+                           name="number"
+                           class="form-control bg-dark text-white border-secondary"
+                           placeholder="شماره تماس">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="password">رمز عبور:</label>
-                <input type="password" name="password" id="password" placeholder="رمز عبور خود را وارد کنید" required autocomplete="current-password"> 
+            
+            <div class="mb-3">
+                <label class="form-label">رمز عبور</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-warning border-secondary">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password"
+                           name="password"
+                           class="form-control bg-dark text-white border-secondary"
+                           placeholder="رمز عبور">
+                </div>
             </div>
 
-            <button type="submit">ورود</button>
+            
+            <button class="btn btn-warning w-100 mt-3 fw-bold py-2"
+                    style="border-radius: 10px; font-size: 1.1rem;">
+                ورود
+            </button>
+
+            <p class="text-center mt-3">
+                حساب ندارید؟
+                <a href="{% url 'user_register' %}" class="text-warning fw-bold">
+                    ثبت‌نام
+                </a>
+            </p>
+
         </form>
-
-        <br>
-        <div class="register-link">
-            <p>حساب کاربری ندارید؟ <a href="{% url 'user_register' %}">ثبت‌نام کنید</a></p>
-        </div>
     </div>
-</body>
-</html>
+</section>
+
+{% endblock %}

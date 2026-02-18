@@ -1,6 +1,6 @@
 # urls.py
 from django.urls import path
-from .views import UserRegisterView, UserLoginView, UserProfileView, UserLogoutView, AddReply
+from .views import ChangePasswordView, UserRegisterView, UserLoginView, UserProfileView, UserLogoutView, AddReply
 from . import views
 urlpatterns = [
     path('register/', UserRegisterView.as_view(), name='user_register'),
@@ -17,4 +17,7 @@ urlpatterns = [
     path('working_shift/create/', views.create_working_shift, name='create_working_shift'),
     path('working_shift/list/', views.list_working_shifts, name='list_working_shifts'),
 
+    path('change-password/', ChangePasswordView.as_view(), name='change_password'),
 ]
+
+
