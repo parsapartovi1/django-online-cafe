@@ -52,10 +52,10 @@
                         تخفیف‌ها
                     </a>
                 </li>
-
+                
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'table_list' %}">
-                        میزها
+                    <a class="nav-link" href="{% url 'table_reservation' %}">
+                        رزرو میز
                     </a>
                 </li>
             </ul>
@@ -92,9 +92,7 @@
                  class="me-3">
         </a>
         </div>
-
-
-                 <div>
+        <div>
         <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'list_working_shifts' %}">
            <img src="{% static 'images/nav_access/444.png' %}"
                  alt="clock Logo"
