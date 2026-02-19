@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}سفارش‌های من - ماریبا کافی{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/order_list.css' %}">
+<body class="dark-navbar-page">
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+        <h1 class="page-title">سفارش‌های من</h1>
+        <p class="lead text-muted">تاریخچه سفارش‌ها و وضعیت فعلی</p>
+    </div>
+
+    {% if orders %}
+
+        <div class="row g-4">
+
+            {% for order in orders %}
+
+                <div class="col-lg-6 col-xl-4">
+                    <div class="order-card {% if order.order_status %}delivered{% else %}pending{% endif %}">
+
+                        <div class="order-header">
+                            <div>
+                                <h5 class="order-id mb-1">سفارش #{{ order.id }}</h5>
+                                <small class="text-muted">{{ order.create_date|date:"j F Y – H:i" }}</small>
+                            </div>
+                            <span class="status-badge {% if order.order_status %}bg-success{% else %}bg-warning{% endif %}">
+                                {% if order.order_status %}تحویل شده{% else %}در انتظار{% endif %}
+                            </span>
+                        </div>
+
+                        <div class="order-body">
+                            <div class="product-preview d-flex align-items-center mb-3">
+                                {% if order.product.image %}
+                                    <img src="{{ order.product.image.url }}" alt="{{ order.product.name }}" class="product-img me-3">
+                                {% else %}
+                                    <div class="no-img me-3"><i class="bi bi-cup-hot"></i></div>
+                                {% endif %}
+                                <div>
+                                    <h6 class="mb-1">{{ order.product.name }}</h6>
+                                    <small>میز شماره {{ order.table.table_number }}</small>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="total-price">
+                                    {{ order.total_amount|floatformat:0 }} تومان
+                                </div>
+                                {% if order.cancellation %}
+                                    <span class="badge bg-danger">لغو شده</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="order-footer">
+                            <a href="{% url 'order-detail' order.pk %}" class="btn btn-outline-primary w-100">
+                                مشاهده جزئیات
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="text-center py-5 my-5 empty-state">
+            <i class="bi bi-receipt display-1 text-muted opacity-50"></i>
+            <h4 class="mt-4">هنوز سفارشی ثبت نشده است</h4>
+            <a href="{% url 'product_list' %}" class="btn btn-primary mt-3 px-4">
+                رفتن به منو
+            </a>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

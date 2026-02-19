@@ -1,0 +1,20 @@
+<h2>Record Payment</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Order:</label>
+    <select name="order_id">
+        {% for order in orders %}
+            <option value="{{ order.id }}">Order #{{ order.id }}</option>
+        {% endfor %}
+    </select><br>
+
+    <label>Status:</label>
+    <select name="status">
+        <option value="1">Paid</option>
+        <option value="0">Unpaid</option>
+    </select><br>
+
+    <button type="submit">Save Payment</button>
+</form>

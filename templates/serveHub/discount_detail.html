@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ object.product.name }} – {{ object.amount }}% تخفیف{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/discount_detail.css' %}">
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            <div class="discount-detail-card">
+
+                <div class="row g-0">
+
+                    <div class="col-md-5">
+                        <div class="detail-image">
+                            {% if object.product.image %}
+                                <img src="{{ object.product.image.url }}" alt="{{ object.product.name }}">
+                            {% else %}
+                                <div class="no-image">
+                                    <i class="bi bi-cup-hot-fill"></i>
+                                </div>
+                            {% endif %}
+
+                            <div class="big-percentage">
+                                {{ object.amount }}<span>%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="detail-content p-4 p-md-5">
+
+                            <h1 class="detail-title">{{ object.product.name }}</h1>
+
+                            
+
+                            {% if object.duration %}
+                                <div class="alert alert-warning border-0 bg-warning-subtle mb-4">
+                                    <i class="bi bi-clock-history me-2"></i>
+                                    این تخفیف تا تاریخ {{ object.duration|date:"j F Y – H:i" }} معتبر است
+                                </div>
+                            {% endif %}
+
+                            <div class="product-info mb-4">
+                                <p><strong>دسته‌بندی:</strong> {{ object.product.category.name }}</p>
+                                {% if object.product.quantity %}
+                                    <p><strong>موجودی فعلی:</strong> {{ object.product.quantity }} عدد</p>
+                                {% endif %}
+                                {% if object.product.product_rate > 0 %}
+                                    <p>
+                                        <strong>امتیاز:</strong>
+                                        <span class="text-warning">{{ object.product.product_rate|floatformat:1 }}</span>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    </p>
+                                {% endif %}
+                            </div>
+
+                            
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

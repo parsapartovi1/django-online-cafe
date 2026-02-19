@@ -9,10 +9,10 @@ A Django-based café management system with modular apps:
 💳 payment → Orders & payments
 
 🍽 servehub → Tables, categories, products, discounts
-
 🚀 0 → 100 Setup Guide
-📌 1. Prerequisites
 
+📌 1. Prerequisites
+---
 Make sure you have:
 
 Python 3.10+
@@ -32,17 +32,24 @@ pip --version
 git --version
 
 📂 2. Clone the Repository
+---
 git clone git@github.com:parsapartovi1/django-online-cafe.git
+
 cd django-online-cafe
 
 🐍 3. Create Virtual Environment
+---
 On Mac/Linux:
+```
 python -m venv venv
 source venv/bin/activate
+```
 
 On Windows:
+```
 python -m venv venv
 venv\Scripts\activate
+```
 
 
 You should now see:
@@ -50,8 +57,10 @@ You should now see:
 (venv)
 
 📦 4. Install Dependencies
+---
+```
 pip install -r requirements.txt
-
+```
 
 If requirements.txt doesn’t exist yet:
 
@@ -59,6 +68,7 @@ pip install django psycopg2-binary
 pip freeze > requirements.txt
 
 ⚙️ 5. Project Structure
+---
 online-cafe/
 │
 ├── users/              # Users, Comments, Replies, Working Shifts
@@ -69,7 +79,7 @@ online-cafe/
 └── requirements.txt
 
 🔐 6. Environment Variables
-
+---
 Create a .env file in the root directory:
 
 SECRET_KEY=your-secret-key
@@ -82,9 +92,9 @@ DB_PORT=5432
 
 
 Install dotenv:
-
+```
 pip install python-dotenv
-
+```
 
 Update settings.py:
 
@@ -97,20 +107,21 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
 
 🗄 7. Database Setup
+---
 Option A: SQLite (Simple Development)
 
 In settings.py:
-
+```
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+```
 
 Then:
-
+```
 python manage.py migrate
 
 Option B: PostgreSQL (Recommended)
@@ -118,10 +129,10 @@ Option B: PostgreSQL (Recommended)
 Create database:
 
 CREATE DATABASE cafe_db;
-
+```
 
 Update settings.py:
-
+```
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -132,19 +143,22 @@ DATABASES = {
         'PORT': os.getenv("DB_PORT"),
     }
 }
-
+```
 
 Then migrate:
-
+```
 python manage.py migrate
-
+```
 👤 8. Create Superuser
+---
+```
 python manage.py createsuperuser
-
+```
 
 Follow prompts.
 
 🧠 9. Apps Overview
+---
 👤 Users App
 
 Custom User model
@@ -181,15 +195,18 @@ INSTALLED_APPS = [
 ]
 
 🧱 10. Run Migrations for Apps
+---
 
 If new models are added:
-
+```
 python manage.py makemigrations
 python manage.py migrate
-
+```
 ▶️ 11. Run the Server
+---
+```
 python manage.py runserver
-
+```
 
 Open:
 
@@ -205,11 +222,16 @@ http://127.0.0.1:8000/admin/
 git checkout -b feature/add-discount-logic
 
 💾 Commit Changes
+```
 git add .
 git commit -m "Add discount calculation logic"
+```
 
 🚀 Push to GitHub
-git push origin feature/add-discount-logic
+```
+git push origin feature/add-discount-logic  
+```
+(your own branch)
 
 🧪 Running Tests
 
@@ -272,10 +294,10 @@ Open Pull Request
 MIT License
 
 👨‍💻 Author
-
 Parsa
 Ebrahim
 Maryam
 Alireza
+
 
 
