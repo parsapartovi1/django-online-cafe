@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
-from .models import Discount, Category
-from django.shortcuts import render, get_object_or_404
+from .models import Discount, Category, ProductVariant
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.views import View
 from .models import Product, Category, Table
@@ -32,8 +32,21 @@ def home(request):
 
 class ProductListView(View):
     def get(self, request):
-        products = Product.objects.all().order_by("name")
-        return render(request, "serveHub/product_list.html", {"products": products})
+        categories = Category.objects.all()
+        selected_category_id = request.GET.get('category')
+        
+        if selected_category_id:
+            selected_category = get_object_or_404(Category, id=selected_category_id)
+            products = Product.objects.filter(category=selected_category).prefetch_related('variants').order_by('name')
+        else:
+            selected_category = None
+            products = Product.objects.prefetch_related('variants').all().order_by('category__type', 'name')
+        
+        return render(request, "serveHub/product_list.html", {
+            'products': products,
+            'categories': categories,
+            'selected_category': selected_category
+        })
 
 
 class ProductCreateView(View):
@@ -43,9 +56,9 @@ class ProductCreateView(View):
 
     def post(self, request):
         name = request.POST.get("name")
-        price = request.POST.get("price")
+        name_en = request.POST.get("name_en")
         category_id = request.POST.get("category")
-        quantity = request.POST.get("quantity")
+        description = request.POST.get("description")
         image = request.FILES.get("image")
 
         category = get_object_or_404(Category, id=category_id)
@@ -53,19 +66,15 @@ class ProductCreateView(View):
         try:
             product = Product.objects.create(
                 name=name,
-                price=price,
+                name_en=name_en,
                 category=category,
-                quantity=quantity,
+                description=description,
                 image=image,
             )
-            messages.success(request, f'Product "{product.name}" created successfully.')
-            return render(
-                request,
-                "serveHub/success.html",
-                {"message": "Product created successfully!"},
-            )
+            messages.success(request, f'محصول "{product.name}" با موفقیت ایجاد شد.')
+            return redirect('product_list')
         except Exception as e:
-            messages.error(request, f"Error creating product: {str(e)}")
+            messages.error(request, f"خطا در ایجاد محصول: {str(e)}")
             categories = Category.objects.all()
             return render(
                 request, "serveHub/product_form.html", {"categories": categories}
@@ -86,32 +95,28 @@ class ProductUpdateView(View):
         product = get_object_or_404(Product, id=id)
 
         name = request.POST.get("name")
-        price = request.POST.get("price")
+        name_en = request.POST.get("name_en")
         category_id = request.POST.get("category")
-        quantity = request.POST.get("quantity")
+        description = request.POST.get("description")
         image = request.FILES.get("image")
 
         category = get_object_or_404(Category, id=category_id)
 
         try:
             product.name = name
-            product.price = price
+            product.name_en = name_en
             product.category = category
-            product.quantity = quantity
+            product.description = description
 
             if image:
                 product.image = image
 
             product.save()
 
-            messages.success(request, f'Product "{product.name}" updated successfully.')
-            return render(
-                request,
-                "serveHub/success.html",
-                {"message": "Product updated successfully!"},
-            )
+            messages.success(request, f'محصول "{product.name}" با موفقیت بروزرسانی شد.')
+            return redirect('product_list')
         except Exception as e:
-            messages.error(request, f"Error updating product: {str(e)}")
+            messages.error(request, f"خطا در بروزرسانی محصول: {str(e)}")
             categories = Category.objects.all()
             return render(
                 request,
@@ -131,12 +136,106 @@ class ProductDeleteView(View):
         product = get_object_or_404(Product, id=id)
         product_name = product.name
         product.delete()
-        messages.success(request, f'Product "{product_name}" deleted successfully.')
-        return render(
-            request,
-            "serveHub/success.html",
-            {"message": "Product deleted successfully!"},
-        )
+        messages.success(request, f'محصول "{product_name}" با موفقیت حذف شد.')
+        return redirect('product_list')
+
+
+class ProductVariantCreateView(View):
+    def get(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+        return render(request, "serveHub/variant_form.html", {"product": product})
+
+    def post(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+        
+        size = request.POST.get("size")
+        price = request.POST.get("price")
+        quantity = request.POST.get("quantity")
+
+        try:
+            variant = ProductVariant.objects.create(
+                product=product,
+                size=size,
+                price=price,
+                quantity=quantity
+            )
+            messages.success(request, f'نوع "{size}" با موفقیت اضافه شد.')
+            return redirect('product_list')
+        except Exception as e:
+            messages.error(request, f"خطا در ایجاد نوع محصول: {str(e)}")
+            return render(request, "serveHub/variant_form.html", {"product": product})
+
+
+class ProductVariantUpdateView(View):
+    def get(self, request, id):
+        variant = get_object_or_404(ProductVariant, id=id)
+        return render(request, "serveHub/variant_form.html", {"variant": variant})
+
+    def post(self, request, id):
+        variant = get_object_or_404(ProductVariant, id=id)
+        
+        variant.size = request.POST.get("size")
+        variant.price = request.POST.get("price")
+        variant.quantity = request.POST.get("quantity")
+        variant.save()
+
+        messages.success(request, f'نوع "{variant.size}" با موفقیت بروزرسانی شد.')
+        return redirect('product_list')
+
+
+class ProductVariantDeleteView(View):
+    def post(self, request, id):
+        variant = get_object_or_404(ProductVariant, id=id)
+        variant.delete()
+        messages.success(request, "نوع محصول با موفقیت حذف شد.")
+        return redirect('product_list')
+
+
+
+class TableReservationView(View):
+    def get(self, request):
+        tables = Table.objects.filter(is_available=True)
+        selected_type = request.GET.get('type')
+        
+        if selected_type:
+            tables = tables.filter(table_type=selected_type)
+        
+        table_types = Table.TABLE_TYPES
+        
+        return render(request, 'serveHub/table_reservation.html', {
+            'tables': tables,
+            'table_types': table_types,
+            'selected_type': selected_type
+        })
+
+
+class ReserveTableView(View):
+    def post(self, request, table_id):
+        table = get_object_or_404(Table, id=table_id, is_available=True)
+        people_count = request.POST.get('people_count')
+        reservation_datetime = request.POST.get('reservation_datetime')
+        
+        if not people_count or not reservation_datetime:
+            messages.error(request, 'لطفاً تمام موارد را پر کنید.')
+            return redirect('table_reservation')
+        
+        try:
+            people_count = int(people_count)
+            if people_count > table.capacity:
+                messages.error(request, f'ظرفیت میز حداکثر {table.capacity} نفر است.')
+                return redirect('table_reservation')
+            
+            total_price = table.total_price(people_count)
+            
+            messages.success(request, 
+                f'میز {table.get_table_type_display()} با موفقیت برای {people_count} نفر رزرو شد. '
+                f'مبلغ قابل پرداخت: {total_price:,} تومان')
+            
+        except Exception as e:
+            messages.error(request, f'خطا در رزرو: {str(e)}')
+        
+        return redirect('table_reservation')
+
 
 
 class TableListView(View):
@@ -156,7 +255,7 @@ class TableCreateView(View):
         price = request.POST.get("price")
 
         if Table.objects.filter(table_number=table_number).exists():
-            messages.error(request, "The table number is duplicate.")
+            messages.error(request, "شماره میز تکراری است.")
             return render(request, "serveHub/table_form.html")
 
         try:
@@ -166,16 +265,10 @@ class TableCreateView(View):
                 duration=duration,
                 price=price,
             )
-            messages.success(
-                request, f"Table #{table.table_number} created successfully."
-            )
-            return render(
-                request,
-                "serveHub/success.html",
-                {"message": "Table created successfully!"},
-            )
+            messages.success(request, f'میز شماره {table.table_number} با موفقیت ایجاد شد.')
+            return redirect('table_list')
         except Exception as e:
-            messages.error(request, f"Error creating table: {str(e)}")
+            messages.error(request, f"خطا در ایجاد میز: {str(e)}")
             return render(request, "serveHub/table_form.html")
 
 
@@ -194,7 +287,7 @@ class TableUpdateView(View):
 
         if table.table_number != int(table_number):
             if Table.objects.filter(table_number=table_number).exists():
-                messages.error(request, "The table number is duplicate.")
+                messages.error(request, "شماره میز تکراری است.")
                 return render(request, "serveHub/table_form.html", {"object": table})
 
         try:
@@ -204,14 +297,8 @@ class TableUpdateView(View):
             table.price = price
             table.save()
 
-            messages.success(
-                request, f"Table #{table.table_number} updated successfully."
-            )
-            return render(
-                request,
-                "serveHub/success.html",
-                {"message": "Table updated successfully!"},
-            )
+            messages.success(request, f'میز شماره {table.table_number} با موفقیت بروزرسانی شد.')
+            return redirect('table_list')
         except Exception as e:
-            messages.error(request, f"Error updating table: {str(e)}")
+            messages.error(request, f"خطا در بروزرسانی میز: {str(e)}")
             return render(request, "serveHub/table_form.html", {"object": table})

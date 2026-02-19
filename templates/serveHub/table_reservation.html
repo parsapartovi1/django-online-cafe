@@ -1,0 +1,185 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>رزرو میز | Mariba Coffee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* نوار مشکی خالص */
+        nav.navbar {
+            background: #000 !important;
+            backdrop-filter: none !important;
+            background-image: none !important;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+    </style>
+</head>
+<body>
+
+<!-- نوار (کپی از base.html اما بدون عکس پس‌زمینه) -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm px-4" style="background-color: #000000; background-image: none;">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+            <img src="{% static 'images/brand_label.png' %}" alt="Mariba Logo" width="100" height="100" class="me-2">
+            Mariba Coffee | قهوه ماریبا
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}">منو محصولات</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'category-list' %}">دسته‌بندی‌ها</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'discount-list' %}">تخفیف‌ها</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'table_reservation' %}">رزرو میز</a></li>
+            </ul>
+        </div>
+        <div>
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'user_register' %}">
+                <img src="{% static 'images/nav_access/3.png' %}" alt="User Logo" width="40" height="40" class="me-2 rounded-circle">
+            </a>
+        </div>
+        <div>
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'order-list' %}">
+                <img src="{% static 'images/nav_access/22.png' %}" alt="cart Logo" width="30" height="30" class="me-3">
+            </a>
+        </div>
+        <div>
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'category-list' %}">
+                <img src="{% static 'images/nav_access/333.png' %}" alt="comment Logo" width="30" height="30" class="me-3">
+            </a>
+        </div>
+        <!-- ✅ آیکون ساعت اضافه شد -->
+        <div>
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'list_working_shifts' %}">
+                <img src="{% static 'images/nav_access/444.png' %}" alt="clock Logo" width="30" height="30" class="me-3">
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- محتوای صفحه رزرو میز -->
+<div class="container-fluid py-5" style="background-color: #fff9f5;">
+    <div class="container">
+        <h1 class="mb-5 text-center" style="color: #2c1810; border-bottom: 2px solid #8b5a2b; padding-bottom: 15px;">
+            🪑 رزرو میز در کافه ماریبا
+        </h1>
+        
+        <div class="d-flex justify-content-center gap-3 mb-5 flex-wrap">
+            <a href="{% url 'table_reservation' %}" class="btn px-4 {% if not selected_type %}active-filter{% endif %}" 
+               style="background-color: {% if not selected_type %}#8b5a2b{% else %}#f0e4d8{% endif %}; color: {% if not selected_type %}white{% else %}#2c1810{% endif %};">
+                همه میزها
+            </a>
+            {% for type_code, type_name in table_types %}
+            <a href="?type={{ type_code }}" class="btn px-4 {% if selected_type == type_code %}active-filter{% endif %}"
+               style="background-color: {% if selected_type == type_code %}#8b5a2b{% else %}#f0e4d8{% endif %}; color: {% if selected_type == type_code %}white{% else %}#2c1810{% endif %};">
+                {{ type_name }}
+            </a>
+            {% endfor %}
+        </div>
+        
+        <div class="row g-4">
+            {% for table in tables %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100 table-reservation-card">
+                
+                    {% if table.image %}
+                    <img src="{{ table.image.url }}" class="card-img-top" alt="{{ table.get_table_type_display }}"
+                         style="height: 200px; object-fit: cover; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                    {% else %}
+                    <div style="height: 200px; background: linear-gradient(135deg, #f0e4d8, #e8d5c5); display: flex; align-items: center; justify-content: center; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                        <span style="color: #8b5a2b; font-size: 3rem;">🪑</span>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="fw-bold mb-0" style="color: #2c1810;">{{ table.get_table_type_display }}</h4>
+                            <span class="badge" style="background-color: #d4a574; color: white;">میز {{ table.table_number }}</span>
+                        </div>
+                        
+                        {% if table.description %}
+                        <p class="text-muted small mb-3">{{ table.description }}</p>
+                        {% endif %}
+                        
+                        <div class="table-details mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>👥 ظرفیت:</span>
+                                <span class="fw-bold">{{ table.capacity }} نفر</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>⏱ مدت زمان:</span>
+                                <span class="fw-bold">{{ table.duration }} دقیقه</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>💰 قیمت هر نفر:</span>
+                                <span class="fw-bold text-success">{{ table.price_per_person|intcomma }} تومان</span>
+                            </div>
+                        </div>
+                        
+                        <form method="post" action="{% url 'reserve_table' table.id %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label small">تعداد نفرات:</label>
+                                <select name="people_count" class="form-select form-select-sm" required>
+                                    {% for i in "12345678"|make_list %}
+                                        {% if forloop.counter <= table.capacity %}
+                                        <option value="{{ forloop.counter }}">{{ forloop.counter }} نفر</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small">تاریخ و ساعت:</label>
+                                <input type="datetime-local" name="reservation_datetime" class="form-control form-control-sm" required>
+                            </div>
+                            <button type="submit" class="btn w-100 py-2 rounded-pill"
+                                    style="background-color: #8b5a2b; color: white; border: none;">
+                                رزرو میز
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <h4 style="color: #8b5a2b;">📭 میزی برای نمایش وجود ندارد</h4>
+                    <p class="text-muted">در حال حاضر میزی برای رزرو موجود نیست.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+.table-reservation-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.table-reservation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
+}
+.active-filter {
+    background-color: #8b5a2b !important;
+    color: white !important;
+}
+.form-select, .form-control {
+    border: 1px solid #e0d6cc;
+    border-radius: 8px;
+}
+.form-select:focus, .form-control:focus {
+    border-color: #8b5a2b;
+    box-shadow: 0 0 0 0.2rem rgba(139, 90, 43, 0.25);
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
