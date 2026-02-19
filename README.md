@@ -38,7 +38,6 @@ git clone git@github.com:parsapartovi1/django-online-cafe.git
 cd django-online-cafe
 
 🐍 3. Create Virtual Environment
----
 On Mac/Linux:
 ```
 python -m venv venv
