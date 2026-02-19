@@ -7,6 +7,8 @@ from .models import Comment, Product
 from django.http import HttpResponseBadRequest
 from .models import WorkingShift
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password, make_password
+
 class UserRegisterView(View):
     def get(self, request):
         return render(request, 'user/register.html')
@@ -17,25 +19,19 @@ class UserRegisterView(View):
         number = request.POST.get('number')
         password = request.POST.get('password')
 
-
         if User.objects.filter(number=number).exists():
             messages.error(request, 'This number is already registered.')
             return render(request, 'user/register.html')
 
-        try:
+        user = User.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            number=number,
+            password=make_password(password)
+        )
 
-            user = User.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
-                number=number,
-                password=password
-            )
-            messages.success(request, 'Registration successful. Please log in.')
-            return redirect('user_login')
-
-        except Exception as e:
-            messages.error(request, f'Error during registration: {str(e)}')
-            return render(request, 'user/register.html')
+        messages.success(request, 'Registration successful. Please log in.')
+        return redirect('user_login')
 
 
 class UserLoginView(View):
@@ -46,33 +42,68 @@ class UserLoginView(View):
         number = request.POST.get('number')
         password = request.POST.get('password')
 
-
-        user = authenticate(request, username=number, password=password)
-
-        if user:
-            login(request, user)
-            messages.success(request, f'Welcome, {user.first_name}')
-            return redirect('add_reply', comment_id=1)
-        else:
-            messages.error(request, 'Please check your number and password and try again.')
+        try:
+            user = User.objects.get(number=number)
+        except User.DoesNotExist:
+            messages.error(request, 'This number is not registered.')
             return render(request, 'user/login.html')
 
+        if not check_password(password, user.password): 
+            messages.error(request, 'Incorrect password.')
+            return render(request, 'user/login.html')
+
+        request.session['user_id'] = user.id
+        return redirect('user_profile')
 
 class UserProfileView(View):
     def get(self, request):
+        user_id = request.session.get('user_id')
 
-        if not request.user.is_authenticated:
+        if not user_id:
             return redirect('user_login')
 
-        return render(request, 'user/profile.html', {'user': request.user})
-
+        user = User.objects.get(id=user_id)
+        return render(request, 'user/profile.html', {'user': user})
 
 class UserLogoutView(View):
     def get(self, request):
-
-        logout(request)
-
+        request.session.flush()
         return redirect('user_login')
+
+
+class ChangePasswordView(View):
+
+    def get(self, request):
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return redirect('user_login')
+
+        return render(request, 'change_password.html')
+
+    def post(self, request):
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return redirect('user_login')
+
+        user = User.objects.get(id=user_id)
+
+        old_password = request.POST.get('old_password')
+        new_password1 = request.POST.get('new_password1')
+        new_password2 = request.POST.get('new_password2')
+
+        if not check_password(old_password, user.password):
+            messages.error(request, 'Current password is incorrect.')
+            return redirect('change_password')
+
+        if new_password1 != new_password2:
+            messages.error(request, 'New passwords do not match.')
+            return redirect('change_password')
+
+        user.password = make_password(new_password1)
+        user.save()
+
+        messages.success(request, 'Password changed successfully.')
+        return redirect('user_profile')
 
 
 def create_comment(request, product_id):
@@ -104,6 +135,8 @@ def create_comment(request, product_id):
 
 
     return render(request, 'user/create_comment.html', {'product': product})
+
+
 
 
 def product_comments(request, product_id):
@@ -185,5 +218,6 @@ def create_working_shift(request):
 def list_working_shifts(request):
     shifts = WorkingShift.objects.filter(user=request.user)
     return render(request, 'user/working_shift_list.html', {'shifts': shifts})
+
 
 

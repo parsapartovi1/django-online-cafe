@@ -1,46 +1,130 @@
-{% load static %}
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه ثبت‌نام</title>
-    <link rel="stylesheet" href="{% static 'css/register.css' %}">
-</head>
-<body>
-    <div class="container">
-        <div class="form-container">
-            <h2>ثبت‌نام</h2>
-            <form method="POST" autocomplete="off">  
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    <label for="first_name">نام</label>
-                    <input type="text" id="first_name" name="first_name" placeholder="نام خود را وارد کنید" required autocomplete="name"> 
+{% block title %}ثبت‌نام | Mariba Coffee{% endblock %}
+
+{% block content %}
+
+<style>
+    nav.navbar {
+        background: #000 !important;
+        backdrop-filter: none !important;
+        background-image: none !important;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+</style>
+
+<section class="d-flex justify-content-center align-items-center"
+         style="
+            min-height: 100vh;
+            background-image: url('/static/images/background/8.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+         ">
+
+    <div class="p-4 shadow-lg"
+         style="
+            width: 430px;
+            background: rgba(0, 0, 0, 0.40);
+            backdrop-filter: blur(14px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #fff;
+            box-shadow: 0 0 35px rgba(0,0,0,0.55);
+         ">
+
+        <h3 class="text-center mb-4 fw-bold" style="letter-spacing: 1px;">
+            ایجاد حساب کاربری
+        </h3>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- نام -->
+            <div class="mb-3">
+                <label class="form-label">نام</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-warning border-secondary">
+                        <i class="bi bi-person"></i>
+                    </span>
+                    <input type="text"
+                           name="first_name"
+                           class="form-control bg-dark text-white border-secondary"
+                           placeholder="نام">
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="last_name">نام خانوادگی</label>
-                    <input type="text" id="last_name" name="last_name" placeholder="نام خانوادگی خود را وارد کنید" required autocomplete="family-name"> 
+            <!-- نام خانوادگی -->
+            <div class="mb-3">
+                <label class="form-label">نام خانوادگی</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-warning border-secondary">
+                        <i class="bi bi-person-badge"></i>
+                    </span>
+                    <input type="text"
+                           name="last_name"
+                           class="form-control bg-dark text-white border-secondary"
+                           placeholder="نام خانوادگی">
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="number">شماره تلفن</label>
-                    <input type="text" id="number" name="number" placeholder="شماره تلفن خود را وارد کنید" required autocomplete="tel"> 
+            <!-- شماره تماس -->
+            <div class="mb-3">
+                <label class="form-label">شماره تماس</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-warning border-secondary">
+                        <i class="bi bi-phone"></i>
+                    </span>
+                    <input type="text"
+                           name="number"
+                           class="form-control bg-dark text-white border-secondary"
+                           placeholder="مثال: 09123456789">
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="password">رمز عبور</label>
-                    <input type="password" id="password" name="password" placeholder="رمز عبور خود را وارد کنید" required autocomplete="new-password"> 
-
-                <button type="submit" class="submit-btn">ثبت‌نام</button>
-
-                <div class="login-link">
-                    <p>قبلاً حساب کاربری دارید؟ <a href="{% url 'user_login' %}">ورود به حساب</a></p>
+            <!-- رمز عبور -->
+            <div class="mb-3">
+                <label class="form-label">رمز عبور</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-warning border-secondary">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password"
+                           name="password"
+                           class="form-control bg-dark text-white border-secondary"
+                           placeholder="رمز عبور">
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <!-- تکرار رمز عبور -->
+            <div class="mb-3">
+                <label class="form-label">تکرار رمز عبور</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-warning border-secondary">
+                        <i class="bi bi-lock-fill"></i>
+                    </span>
+                    <input type="password"
+                           name="password2"
+                           class="form-control bg-dark text-white border-secondary"
+                           placeholder="تکرار رمز عبور">
+                </div>
+            </div>
+
+            <button class="btn btn-warning w-100 mt-3 fw-bold py-2"
+                    style="border-radius: 10px; font-size: 1.1rem;">
+                ثبت‌نام
+            </button>
+
+            <p class="text-center mt-3">
+                قبلاً حساب ساخته‌اید؟
+                <a href="{% url 'user_login' %}" class="text-warning fw-bold">
+                    ورود
+                </a>
+            </p>
+
+        </form>
     </div>
-</body>
-</html>
+</section>
+
+{% endblock %}

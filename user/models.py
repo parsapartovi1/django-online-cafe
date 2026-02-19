@@ -3,6 +3,7 @@ from serveHub.models import Product
 from django.core.validators import MinValueValidator, MaxValueValidator
 from .choices import WeekDays
 
+
 class User(models.Model):
     first_name = models.CharField(
         max_length=24,
@@ -24,12 +25,13 @@ class User(models.Model):
         max_length=11,
         verbose_name='number',
         help_text='Enter your number',
+        unique=True,              
         blank=False,
         null=False
     )
 
     password = models.CharField(
-        max_length=24,
+        max_length=255,            
         verbose_name='password',
         help_text='Enter your password',
         blank=False,
@@ -60,8 +62,10 @@ class User(models.Model):
         verbose_name='last update',
         auto_now=True
     )
+
     class Meta:
         verbose_name = "1. user"
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 

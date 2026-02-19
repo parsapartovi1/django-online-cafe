@@ -1,29 +1,153 @@
-{% load static %}
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <title>پروفایل</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% block title %}پروفایل | Mariba Coffee{% endblock %}
 
-</head>
-<body>
-    <h2>پروفایل کاربری</h2>
+{% block content %}
 
-    <p>خوش آمدید، {{ user.first_name }} {{ user.last_name }}</p>
+<style>
+    nav.navbar {
+        background: #000 !important;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+</style>
 
-    <h3>نظرات شما:</h3>
-    <ul>
-        {% for comment in comments %}
-            <li>{{ comment.text }}  
-                <a href="{% url 'add_reply' comment.id %}">پاسخ دادن</a></li>
-        {% empty %}
-            <li>شما هیچ نظری ارسال نکرده‌اید.</li>
-        {% endfor %}
-    </ul>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/font-face.css" rel="stylesheet">
 
-    <br><br>
-    <a href="{% url 'user_logout' %}">خروج از حساب</a>
-</body>
-</html>
+<style>
+    * {
+        font-family: 'Vazir', sans-serif !important;
+    }
+
+    .profile-container {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.90);
+        backdrop-filter: blur(16px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.20);
+        padding: 30px;
+        color: #fff;
+        box-shadow: 0 0 45px rgba(0,0,0,0.65);
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .profile-header img {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        object-fit: cover;
+    }
+
+    .profile-field {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 10px;
+        padding: 12px 16px;
+        color: #fff;
+        margin-bottom: 18px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+
+    .logout-btn {
+        background: #d9534f;
+        border: none;
+        border-radius: 10px;
+        padding: 7px 14px;
+        font-weight: bold;
+        color: white;
+        font-size: 0.95rem;
+    }
+
+    .change-btn {
+        background: #0275d8;
+        border: none;
+        border-radius: 10px;
+        padding: 7px 14px;
+        font-weight: bold;
+        color: white;
+        font-size: 0.95rem;
+        margin-left: 10px;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 20px 0 10px 0;
+        color: #f1c40f;
+    }
+</style>
+
+<section class="d-flex justify-content-center align-items-center"
+         style="
+            min-height: 100vh;
+            background-image: url('/static/images/background/12.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 10px;
+         ">
+
+    <div class="profile-container">
+
+        <!-- هدر پروفایل -->
+        <div class="profile-header">
+            <img src="/static/images/background/13.png" alt="Profile Picture">
+
+            <div>
+                <h3 class="fw-bold">{{ user.first_name }} {{ user.last_name }}</h3>
+            </div>
+
+            <div class="ms-auto d-flex">
+
+                <!-- دکمه تغییر رمز -->
+                <a href="{% url 'change_password' %}">
+                    <button class="change-btn">تغییر رمز عبور</button>
+                </a>
+
+                <!-- دکمه خروج -->
+                <a href="{% url 'user_logout' %}">
+                    <button class="logout-btn">خروج</button>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- اطلاعات کاربر -->
+        <div class="row">
+            <div class="col-md-6">
+
+                <label class="form-label">نام</label>
+                <div class="profile-field">{{ user.first_name }}</div>
+
+                <label class="form-label">نام خانوادگی</label>
+                <div class="profile-field">{{ user.last_name }}</div>
+
+                <label class="form-label">تاریخ تولد</label>
+                <div class="profile-field">{{ user.birth_date|date:"Y-m-d" }}</div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <label class="form-label">شماره تماس</label>
+                <div class="profile-field">{{ user.number }}</div>
+
+                <label class="form-label">تاریخ عضویت</label>
+                <div class="profile-field">{{ user.create_date|date:"Y-m-d" }}</div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
