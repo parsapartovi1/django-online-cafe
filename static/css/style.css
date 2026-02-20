@@ -61,7 +61,7 @@ body {
     background-attachment: fixed;  /* optional smooth effect */
 }
 .navbar {
-    background-color: rgba(0, 0, 0, 0.8) !important;
+    background-color: rgba(0, 0, 0) !important;
 }
 
 
@@ -72,4 +72,28 @@ body {
 
 .features-section h5 {
     color: darkorange;
+}
+
+
+/* navbar را کاملاً مشکی کنیم */
+.navbar {
+    background-color: #000000 !important;  /* سیاه کامل */
+    /* یا اگر گرادیانت/شفاف می‌خوای: */
+    /* background: rgba(0, 0, 0, 0.95) !important; */
+}
+
+/* اطمینان از خوانایی متن و لینک‌ها */
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .navbar-toggler-icon {
+    color: #ffffff !important;          /* سفید */
+}
+
+.navbar .nav-link:hover {
+    color: #ff8c00 !important;           /* نارنجی تیره موقع هاور - می‌تونی تغییر بدی */
+}
+
+/* اگر shadow یا border اضافه می‌خوای */
+.navbar {
+    border-bottom: 1px solid #222 !important;
 }

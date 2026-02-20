@@ -1,0 +1,128 @@
+.category-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 
+        3px 3px 0 #4a3728,
+        -3px -3px 0 #4a3728,
+        3px -3px 0 #4a3728,
+        -3px 3px 0 #4a3728;
+    letter-spacing: -1.5px;
+    -webkit-text-stroke: 1.5px #3a2a1f;
+
+}
+body {
+    background-image: none !important;
+}
+.product-count-badge {
+    display: inline-block;
+    background: #d7ccc8;
+    color: #5d4037;
+    padding: 0.4rem 1.1rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.product-card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    transition: all 0.22s ease;
+    background: white;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 38px rgba(0,0,0,0.12);
+}
+
+.card-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.product-card:hover .card-image img {
+    transform: scale(1.07);
+}
+
+.no-image-placeholder {
+    height: 100%;
+    background: #f5f0e9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    color: #a1887f;
+}
+
+.discount-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #e53935;
+    color: white;
+    padding: 0.35rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(229,57,53,0.4);
+}
+
+.card-body {
+    padding: 1.4rem 1.25rem;
+}
+
+.card-title {
+    font-size: 1.28rem;
+    font-weight: 600;
+    color: #4e342e;
+    margin-bottom: 0.9rem;
+    line-height: 1.35;
+    height: 3.2em;
+    overflow: hidden;
+    text-align: center;
+}
+
+.price-block {
+    text-align: center;
+}
+
+.old-price {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 1.05rem;
+}
+
+.current-price {
+    color: #c62828;
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+.btn-add {
+    border-radius: 50px;
+    padding: 0.65rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-add:hover {
+    background: #5d4037 !important;
+    transform: translateY(-2px);
+}
+
+/* responsive */
+@media (max-width: 576px) {
+    .category-title { font-size: 2rem; }
+    .card-image { height: 200px; }
+}

@@ -1,0 +1,63 @@
+.order-detail-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.order-header-detail {
+    background: #f8f1ea;
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.status-pill {
+    padding: 0.6rem 1.4rem;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.status-pill.success { background: #d4edda; color: #155724; }
+.status-pill.warning { background: #fff3cd; color: #856404; }
+
+.item-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.no-item-img {
+    width: 90px;
+    height: 90px;
+    background: #f0e9e1;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: #a1887f;
+}
+
+.item-row {
+    padding: 1.25rem;
+    background: #fffaf8;
+    border-radius: 12px;
+}
+
+.summary-box {
+    background: #fffaf8;
+    padding: 1.8rem;
+    border-radius: 12px;
+    border: 1px solid #ffe5d9;
+}
+
+.notes {
+    background: #f8f9fa;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border-left: 4px solid #6c757d;
+}
