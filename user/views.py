@@ -9,6 +9,8 @@ from .models import WorkingShift
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password, make_password
 
+
+
 class UserRegisterView(View):
     def get(self, request):
         return render(request, 'user/register.html')
@@ -139,13 +141,26 @@ def create_comment(request, product_id):
 
 
 
-def product_comments(request, product_id):
+def product_comments(request):
+    # Try to get product_id from GET or POST
+    product_id = request.GET.get("product_id") or request.POST.get("product_id")
+
+    # If no product_id, redirect somewhere (like home page)
+    if not product_id:
+        return redirect('product_list')  # or any page you want
+
+    # Get the product
     product = get_object_or_404(Product, id=product_id)
+
+    # Get its comments
     comments = Comment.objects.filter(product=product, is_delete=False)
+
+    # Render a template
     return render(request, 'user/product_comments.html', {
         'product': product,
         'comments': comments
     })
+
 
 
 class AddReply(View):
@@ -212,12 +227,13 @@ def create_working_shift(request):
         return redirect('list_working_shifts')
 
 
+
     return render(request, 'user/create_working_shift.html')
 
 @login_required
 def list_working_shifts(request):
     shifts = WorkingShift.objects.filter(user=request.user)
-    return render(request, 'user/working_shift_list.html', {'shifts': shifts})
+    return render(request, 'user/list_working_shifts.html', {'shifts': shifts})
 
 
 

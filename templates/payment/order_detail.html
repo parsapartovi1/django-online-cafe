@@ -1,13 +1,89 @@
-<h1>Order Detail</h1>
-<p>Name: {{ order.user }}</p>
-<p>Order: {{ order.product }}</p>
-<p>Table No: {{ order.table }}</p>
-<p>Order Title: {{ order.title }}</p>
-<p>Order Price: {{ order.total_amount }} Rial</p>
-<p>Order Status:
-    {% if order_status == false %}
-    Not Deliverd
-    {% else %}
-    Deliverd
-    {% endif %}
-</p>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}جزئیات سفارش #{{ object.id }} - ماریبا کافی{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/order/order_detail.css' %}">
+
+
+
+<div class="container py-5">
+
+    <div class="mb-4">
+        <a href="{% url 'order-list' %}" class="btn btn-outline-secondary">
+            ← بازگشت به لیست سفارش‌ها
+        </a>
+    </div>
+
+    <div class="order-detail-card">
+
+        <div class="order-header-detail">
+            <div>
+                <h2 class="mb-1">سفارش #{{ object.id }}</h2>
+                <small class="text-muted">{{ object.create_date|date:"j F Y – H:i" }}</small>
+            </div>
+            <span class="status-pill {% if object.order_status %}success{% else %}warning{% endif %}">
+                {% if object.order_status %}تحویل شده{% else %}در انتظار{% endif %}
+            </span>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-8">
+
+                <h5 class="mb-3">محصول سفارش داده شده</h5>
+                <div class="item-row d-flex align-items-center">
+                    {% if object.product.image %}
+                        <img src="{{ object.product.image.url }}" alt="{{ object.product.name }}" class="item-img">
+                    {% else %}
+                        <div class="no-item-img"><i class="bi bi-cup-hot"></i></div>
+                    {% endif %}
+                    <div class="ms-3 flex-grow-1">
+                        <h6 class="mb-1">{{ object.product.name }}</h6>
+                        <small>میز شماره {{ object.table.table_number }}</small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold">{{ object.total_amount|floatformat:0 }} تومان</div>
+                    </div>
+                </div>
+
+                {% if object.notes %}
+                    <div class="notes mt-4">
+                        <h6>یادداشت شما:</h6>
+                        <p class="text-muted">{{ object.notes }}</p>
+                    </div>
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="summary-box">
+                    <h5 class="mb-3">خلاصه پرداخت</h5>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>مبلغ کل:</span>
+                        <strong>{{ object.total_amount|floatformat:0 }} تومان</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>وضعیت پرداخت:</span>
+                        <strong class="{% if payments.last.status %}text-success{% else %}text-danger{% endif %}">
+                            {% if payments.last.status %}پرداخت شده{% else %}پرداخت نشده{% endif %}
+                        </strong>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>مجموع نهایی:</span>
+                        <span class="text-danger">{{ object.total_amount|floatformat:0 }} تومان</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

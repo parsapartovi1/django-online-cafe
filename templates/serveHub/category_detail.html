@@ -1,0 +1,122 @@
+{% load static %}
+
+
+{% block title %}{{ category.name }} - ماریبا کافی{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/category/1category_detail_cards.css' %}">
+
+<div class="container py-4 py-md-5">
+
+    <!-- category title -->
+    <div class="text-center mb-5">
+      <div class="category-header text-center mb-5 position-relative">
+    <div class="title-overlay"></div>
+    
+    <h1 class="category-title display-4 fw-bold text-white position-relative">
+        {{ category.name }}
+    </h1>
+    
+    
+    <div class="product-count position-relative mt-3">
+        <span class="badge bg-dark bg-opacity-75 px-4 py-2 fs-5 rounded-pill">
+            {{ products|length }} محصول
+        </span>
+    </div>
+</div>
+    </div>
+
+    {% if products %}
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+
+            {% for product in products %}
+
+                <div class="col">
+                    <div class="product-card h-100">
+
+                        <div class="card-image">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                            {% else %}
+                                <div class="no-image-placeholder">
+                                    <i class="bi bi-cup-hot"></i>
+                                </div>
+                            {% endif %}
+
+                            {% if product.final_price < product.price %}
+                                <span class="discount-tag">
+                                    {{ product.discount.amount|default:category.discount.amount|default:"-" }}%
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ product.name }}</h5>
+
+                            <div class="price-block mt-auto">
+                                {% if product.final_price < product.price %}
+                                    <div class="old-price">{{ product.price|floatformat:0 }} تومان</div>
+                                    <div class="current-price">
+                                        {{ product.final_price|floatformat:0 }} تومان
+                                    </div>
+                                {% else %}
+                                    <div class="current-price">{{ product.price|floatformat:0 }} تومان</div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                     
+
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- simple bootstrap page -->
+        {% if is_paginated %}
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">اول</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">قبلی</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item disabled">
+                        <span class="page-link">صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">آخر</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+
+    {% else %}
+
+        <div class="text-center py-5 my-5">
+            <i class="bi bi-shop display-1 text-muted opacity-50"></i>
+            <h4 class="mt-4 text-muted">هیچ محصولی در این دسته‌بندی وجود ندارد</h4>
+            <a href="{% url 'category-list' %}" class="btn btn-outline-secondary mt-3 px-4">
+                بازگشت به دسته‌بندی‌ها
+            </a>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

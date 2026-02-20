@@ -2,7 +2,7 @@ from django.db import models
 from serveHub.models import Product
 from django.core.validators import MinValueValidator, MaxValueValidator
 from .choices import WeekDays
-
+from django.conf import settings
 
 class User(models.Model):
     first_name = models.CharField(
@@ -162,17 +162,21 @@ class Reply(models.Model):
 
 
 
+from django.conf import settings
+from django.db import models
+
+
 class WorkingShift(models.Model):
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         verbose_name='user'
     )
 
     weekdays = models.CharField(
-            max_length=24,
-            choices=WeekDays.choices,
-            verbose_name='weekday',
+        max_length=24,
+        choices=WeekDays.choices,
+        verbose_name='weekday',
     )
 
     opening_date = models.DateTimeField(
@@ -189,4 +193,4 @@ class WorkingShift(models.Model):
         verbose_name = "4. Working Shift"
 
     def __str__(self):
-        return str(self.weekdays) + "-" + str(self.opening_date) + "-" + str(self.closed_date)
+        return f"{self.weekdays} - {self.opening_date} - {self.closed_date}"

@@ -1,0 +1,51 @@
+
+/* Scope everything under .shift-page */
+body {
+    font-family: 'vazir', sans-serif;
+    background-image: url('/static/images/background/9.jpg');
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+.shift-page {
+    font-family: 'vazir', sans-serif;
+    background: url("static/images/background/9.jpg") no-repeat center center fixed;
+    background-size: cover;
+    padding: 200px 0;
+}
+
+.shift-page .container {
+    background: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.shift-page h2 {
+    font-family: 'vazir', sans-serif;
+    text-align: center;
+    color: #8B4513;
+    margin-bottom: 20px;
+}
+
+.shift-page li {
+    background: #FFF8DC; /* normal shifts */
+    margin-bottom: 10px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    font-weight: 500;
+}
+
+/* Only empty message */
+.shift-page li.empty {
+    background-color: #FFEBCD;
+    border: 1px solid #FFEBCD;
+    text-align: center;
+    font-style: italic;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+

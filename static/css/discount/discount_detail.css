@@ -1,0 +1,73 @@
+.discount-detail-card {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    background: white;
+}
+
+.detail-image {
+    height: 100%;
+    min-height: 420px;
+    position: relative;
+}
+
+.detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    height: 100%;
+    background: #f5f0e9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8rem;
+    color: #a1887f;
+}
+
+.big-percentage {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: #e53935;
+    color: white;
+    padding: 1.2rem 2.2rem;
+    border-radius: 16px;
+    font-size: 3.8rem;
+    font-weight: 800;
+    box-shadow: 0 8px 24px rgba(229,57,53,0.5);
+    line-height: 1;
+}
+
+.detail-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #4e342e;
+    margin-bottom: 1.5rem;
+}
+
+.price-box {
+    text-align: center;
+    padding: 1.5rem;
+    background: #fff8f8;
+    border-radius: 12px;
+}
+
+.current-price {
+    color: #c62828;
+}
+
+.detail-content {
+    background: linear-gradient(to bottom, #ffffff, #fffaf8);
+}
+
+@media (max-width: 767px) {
+    .detail-image { min-height: 320px; }
+    .big-percentage {
+        font-size: 2.8rem;
+        padding: 0.9rem 1.6rem;
+    }
+    .detail-title { font-size: 2rem; }
+}

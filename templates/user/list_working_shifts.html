@@ -1,11 +1,51 @@
-<h2>Your Working Shifts</h2>
+{% extends "base.html" %}
+{% load static %}
 
-<a href="{% url 'create_working_shift' %}">Add New Shift</a>
+<style>
+    nav.navbar {
+        background: #000 !important;
+        backdrop-filter: none !important;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+</style>
 
-<ul>
-{% for shift in shifts %}
-    <li>{{ shift.weekdays }}: {{ shift.opening_date }} - {{ shift.closed_date }}</li>
-{% empty %}
-    <li>No shifts found.</li>
-{% endfor %}
-</ul>
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/work_shift/list_working_shift.css' %}">
+<div class="shift-page">
+    <div class="container">
+        <h2>ساعات کاری کافه</h2>
+
+        <ul>
+        {% for shift in shifts %}
+            <li>{{ shift.weekdays }}: {{ shift.opening_date }} - {{ shift.closed_date }}</li>
+        {% empty %}
+            <li class="empty"> ظاهرا تعطیلیم  !</li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<section class="py-5 text-white" style="background-color: #000;">
+    <div class="container text-center">
+        <h2 class="mb-5 fw-bold">ما قهوه ماریبا هستیم</h2>
+
+        <div class="row">
+            <div class="col-md-3">
+                <h5 class="fw-bold">☕ کیفیت بالا</h5>
+                <p>سرو قهوه فوق‌العاده، کیک‌ها و شیرینی‌های تازه و ارائه بهترین سرویس در فضاهای زنده و به‌یادماندنی از جمله ارزش‌های ما در مجموعه‌ قهوه ماریبا است. همه هدف ما، تلاش ما و امید ما ارائه بهترین محصول با بهترین قیمت و کیفیت است.</p>
+            </div>
+
+            <div class="col-md-3">
+                <h5 class="fw-bold">⚡ سفارش سریع</h5>
+                <p>مدیریت آنلاین میز و محصولات</p>
+            </div>
+
+            <div class="col-md-3">
+                <h5 class="fw-bold">🎯 تخفیف‌های ویژه</h5>
+                <p>دریافت پیشنهادهای خاص و فصلی</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

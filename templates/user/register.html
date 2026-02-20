@@ -8,7 +8,6 @@
     nav.navbar {
         background: #000 !important;
         backdrop-filter: none !important;
-        background-image: none !important;
         border-bottom: 1px solid rgba(255,255,255,0.15);
     }
 </style>
@@ -41,7 +40,7 @@
         <form method="POST">
             {% csrf_token %}
 
-            <!-- نام -->
+            <!-- Name -->
             <div class="mb-3">
                 <label class="form-label">نام</label>
                 <div class="input-group">
@@ -55,7 +54,7 @@
                 </div>
             </div>
 
-            <!-- نام خانوادگی -->
+            <!-- Family Name -->
             <div class="mb-3">
                 <label class="form-label">نام خانوادگی</label>
                 <div class="input-group">
@@ -69,7 +68,7 @@
                 </div>
             </div>
 
-            <!-- شماره تماس -->
+            <!-- Phone Number -->
             <div class="mb-3">
                 <label class="form-label">شماره تماس</label>
                 <div class="input-group">
@@ -83,7 +82,7 @@
                 </div>
             </div>
 
-            <!-- رمز عبور -->
+            <!-- Password -->
             <div class="mb-3">
                 <label class="form-label">رمز عبور</label>
                 <div class="input-group">
@@ -97,7 +96,7 @@
                 </div>
             </div>
 
-            <!-- تکرار رمز عبور -->
+            <!-- Repeat Password -->
             <div class="mb-3">
                 <label class="form-label">تکرار رمز عبور</label>
                 <div class="input-group">

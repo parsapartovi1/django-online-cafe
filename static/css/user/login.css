@@ -1,0 +1,19 @@
+
+
+
+    * {
+        font-family: 'Vazir', sans-serif !important;
+    }
+    label {
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+    ::placeholder {
+        font-family: 'Vazir', sans-serif !important;
+        font-size: 0.9rem;
+    }
+    .input-group-text {
+        font-family: 'Vazir', sans-serif !important;
+        font-size: 1rem;
+    }
+

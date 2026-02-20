@@ -302,3 +302,4 @@ class TableUpdateView(View):
         except Exception as e:
             messages.error(request, f"خطا در بروزرسانی میز: {str(e)}")
             return render(request, "serveHub/table_form.html", {"object": table})
+

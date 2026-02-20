@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}ورود | Mariba Coffee{% endblock %}
 
 {% block content %}
@@ -9,30 +9,14 @@
     nav.navbar {
         background: #000 !important;
         backdrop-filter: none !important;
-        background-image: none !important;
         border-bottom: 1px solid rgba(255,255,255,0.15);
     }
 </style>
 
-
+<!--login style-->
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/font-face.css" rel="stylesheet">
-<style>
-    * {
-        font-family: 'Vazir', sans-serif !important;
-    }
-    label {
-        font-weight: 600;
-        font-size: 0.95rem;
-    }
-    ::placeholder {
-        font-family: 'Vazir', sans-serif !important;
-        font-size: 0.9rem;
-    }
-    .input-group-text {
-        font-family: 'Vazir', sans-serif !important;
-        font-size: 1rem;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/user/login.css' %}">
+
 
 <section class="d-flex justify-content-center align-items-center"
          style="
