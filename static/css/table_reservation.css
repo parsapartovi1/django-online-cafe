@@ -1,30 +1,151 @@
-/* navbar */
-nav.navbar {
-    background: #000 !important;
-    backdrop-filter: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    background-color: rgba(0, 0, 0, 0.8) !important;
 }
 
 
-/* table */
-.table-reservation-card {
-    transition: transform 0.3s, box-shadow 0.3s;
-    border-radius: 12px;
-    overflow: hidden;
+/* =========================
+   PAGE BACKGROUND
+========================= */
+
+.table-reservation-section {
+    background-color: #fff9f5;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
 }
-.table-reservation-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
+
+
+/* =========================
+   PAGE TITLE
+========================= */
+
+.table-reservation-title {
+    color: #2c1810;
+    border-bottom: 2px solid #8b5a2b;
+    padding-bottom: 15px;
 }
+
+
+/* =========================
+   FILTER BUTTONS
+========================= */
+
+.filter-btn {
+    background-color: #f0e4d8;
+    color: #2c1810;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background-color: #e6d5c3;
+}
+
 .active-filter {
     background-color: #8b5a2b !important;
     color: white !important;
 }
-.form-select, .form-control {
+
+
+/* =========================
+   TABLE CARD
+========================= */
+
+.table-reservation-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.table-reservation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Card image */
+.table-card-img {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+/* Placeholder image */
+.table-placeholder {
+    height: 200px;
+    background: linear-gradient(135deg, #f0e4d8, #e8d5c5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.table-placeholder span {
+    color: #8b5a2b;
+    font-size: 3rem;
+}
+
+
+/* =========================
+   CARD CONTENT
+========================= */
+
+.table-title {
+    color: #2c1810;
+}
+
+.table-badge {
+    background-color: #d4a574;
+    color: white;
+}
+
+.price-text {
+    color: #198754; /* Bootstrap success green */
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-select,
+.form-control {
     border: 1px solid #e0d6cc;
     border-radius: 8px;
 }
-.form-select:focus, .form-control:focus {
+
+.form-select:focus,
+.form-control:focus {
     border-color: #8b5a2b;
     box-shadow: 0 0 0 0.2rem rgba(139, 90, 43, 0.25);
+}
+
+
+/* =========================
+   RESERVE BUTTON
+========================= */
+
+.reserve-btn {
+    background-color: #8b5a2b;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.reserve-btn:hover {
+    background-color: #6f451f;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-title {
+    color: #8b5a2b;
 }

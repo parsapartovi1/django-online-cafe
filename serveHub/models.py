@@ -1,7 +1,14 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 class Product(models.Model):
+    image = models.ImageField(
+        verbose_name="Product Image",
+        help_text="Upload product image",
+        upload_to='serveHub/media/products_img',
+        blank=True,
+        null=True
+    )
+
     name = models.CharField(
         max_length=50,
         verbose_name="Product Name",
@@ -10,12 +17,19 @@ class Product(models.Model):
         null=False
     )
 
-    image = models.ImageField(
-        verbose_name="Product Image",
-        help_text="Upload product image",
-        upload_to='products_img/',
-        blank=True,
-        null=True
+    size = models.CharField(
+        max_length=50,
+        verbose_name="Size / Type",
+        help_text="e.g., single, double, small, medium, large",
+        default="single"
+    )
+
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=0,
+        verbose_name="Price (Toman)",
+        help_text="Price in Toman",
+        default=0.0
     )
 
     product_rate = models.FloatField(
@@ -42,7 +56,7 @@ class Product(models.Model):
 
     description = models.TextField(
         verbose_name="Description / Ingredients",
-        help_text="e.g., espresso, steamed milk",
+        help_text="Ingredients",
         blank=True,
         null=True
     )
@@ -60,63 +74,19 @@ class Product(models.Model):
     class Meta:
         verbose_name = "Product"
         verbose_name_plural = "Products"
-    
-    def __str__(self):
-        return self.name
-
-
-class ProductVariant(models.Model):
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        verbose_name="Main Product",
-        related_name='variants'
-    )
-
-    size = models.CharField(
-        max_length=50,
-        verbose_name="Size / Type",
-        help_text="e.g., single, double, small, medium, large",
-        blank=False,
-        null=False
-    )
-
-    price = models.DecimalField(
-        max_digits=10,
-        decimal_places=0,
-        verbose_name="Price (Toman)",
-        help_text="Price in Toman",
-        blank=False,
-        null=False
-    )
-
-    quantity = models.IntegerField(
-        verbose_name="Stock",
-        help_text="Quantity available for this size",
-        validators=[MinValueValidator(0), MaxValueValidator(20)],
-        default=1
-    )
-
-    created_date = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="Create Date"
-    )
-
-    last_update = models.DateTimeField(
-        auto_now=True,
-        verbose_name="Last Update"
-    )
-
-    class Meta:
-        verbose_name = "Product Variant"
-        verbose_name_plural = "Product Variants"
-        unique_together = ['product', 'size']
 
     def __str__(self):
-        return f"{self.product.name} - {self.size}"
+        return f"{self.name} - {self.size}"
 
 
 class Table(models.Model):
+    image = models.ImageField(
+        verbose_name="Table Image",
+        upload_to='serveHub/media/tables',
+        blank=True,
+        null=True
+    )
+
     TABLE_TYPES = [
         ('single', 'میز تک نفره'),         
         ('couple', 'میز دو نفره'),
@@ -124,7 +94,7 @@ class Table(models.Model):
         ('family_4', 'میز چهار نفره'),
         ('family_6', 'میز شش نفره'),
         ('family_8', 'میز هشت نفره - خانوادگی'),
-        ('birthday', 'میز تولد (ویژه)'),
+        ('birthday', 'میز دیزاین تولد '),
         ('vip', 'میز VIP'),
     ]
     
@@ -141,11 +111,6 @@ class Table(models.Model):
         default='family_4'
     )
 
-    capacity = models.IntegerField(
-        verbose_name="Capacity",
-        help_text="Number of persons"
-    )
-
     duration = models.IntegerField(
         verbose_name="Duration (minutes)",
         help_text="e.g., 120 minutes",
@@ -157,12 +122,6 @@ class Table(models.Model):
         help_text="Price per person in Toman"
     )
 
-    image = models.ImageField(
-        verbose_name="Table Image",
-        upload_to='tables/',
-        blank=True,
-        null=True
-    )
 
     description = models.TextField(
         verbose_name="Description",
@@ -228,18 +187,18 @@ class Discount(models.Model):
 
 
 class Category(models.Model):
+    image=models.ImageField(
+        verbose_name="Image",
+        upload_to='serveHub/media/categories',
+        blank=True,
+    )
+
     type = models.CharField(
         max_length=30,
-        verbose_name="Category Type",
-        help_text="e.g., Espresso, Hot Drink, etc"
+        verbose_name="Category Name",
+        help_text="Hot drinks , cold drinks etc.",
     )
-    
-    description = models.TextField(
-        verbose_name="Description",
-        help_text="Category description",
-        blank=True,
-        null=True
-    )
+
 
     discount = models.ForeignKey(
         Discount,

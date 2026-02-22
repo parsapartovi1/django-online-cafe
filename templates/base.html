@@ -1,51 +1,77 @@
 {% load static %}
 <html lang="fa" dir="rtl">
 <head>
+
     <meta charset="UTF-8">
     <title>{% block title %}Maribra Coffee{% endblock %}</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.png' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/font-face.css" rel="stylesheet">
 <style>
     body, input, button, a, label {
         font-family: 'Vazir', sans-serif !important;
     }
 </style>
+    {% block extra_css %}{% endblock %}
 
 </head>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    function updateClock() {
+        const now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+
+        const clock = document.getElementById("clock");
+        if (clock) {
+            clock.textContent = hours + ":" + minutes;
+        }
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+
+});
+</script>
 
 <body>
 
 <!-- Navbar -->
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm px-4" style="background-color: transparent;">
     <div class="container-fluid">
 
         <!-- Brand -->
         <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'home' %}">
             <img src="{% static 'images/brand_label.png' %}"
-                alt="Mariba Logo"
-                width="100"
-                height="100"
-                class="me-2">
+                 alt="Mariba Logo"
+                 width="80"
+                 height="80"
+                 class="me-2">
             Mariba Coffee | قهوه ماریبا
         </a>
 
         <!-- Toggle button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
                 data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Links -->
+        <!-- Center Links -->
         <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
             <ul class="navbar-nav">
 
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'product_list' %}">
-                        منو محصولات
+                        منو قهوه ماریبا
                     </a>
                 </li>
 
@@ -60,54 +86,57 @@
                         تخفیف‌ها
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'table_reservation' %}">
                         رزرو میز
                     </a>
                 </li>
+
             </ul>
-
         </div>
 
-        <div>
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'user_register' %}">
-           <img src="{% static 'images/nav_access/3.png' %}"
-                 alt="User Logo"
-                 width="40"
-                 height="40"
-                 class="me-2 rounded-circle">
-        </a>
-        </div>
+        <!-- Right Side (Clock + Icons) -->
+        <div class="d-flex align-items-center">
 
-        <div>
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'order-list' %}">
-           <img src="{% static 'images/nav_access/22.png' %}"
-                 alt="cart Logo"
-                 width="30"
-                 height="30"
-                 class="me-3">
-        </a>
-        </div>
+            <!-- Clock Rectangle -->
+            <div class="nav-clock me-3 px-3 py-2">
+                <span id="clock">00:00</span>
+            </div>
 
+            <!-- User -->
+            <a href="{% url 'user_register' %}" class="me-3">
+                <img src="{% static 'images/nav_access/3.png' %}"
+                     alt="User"
+                     width="40"
+                     height="40"
+                     class="rounded-circle">
+            </a>
 
-         <div>
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'product_comments' %}">
-           <img src="{% static 'images/nav_access/333.png' %}"
-                 alt="comment Logo"
-                 width="30"
-                 height="30"
-                 class="me-3">
-        </a>
-        </div>
-        <div>
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'list_working_shifts' %}">
-           <img src="{% static 'images/nav_access/444.png' %}"
-                 alt="clock Logo"
-                 width="30"
-                 height="30"
-                 class="me-3">
-        </a>
+            <!-- Cart -->
+            <a href="{% url 'order-list' %}" class="me-3">
+                <img src="{% static 'images/nav_access/22.png' %}"
+                     alt="Cart"
+                     width="30"
+                     height="30">
+            </a>
+
+            <!-- Comments -->
+            <a href="{% url 'product_comments' %}" class="me-3">
+                <img src="{% static 'images/nav_access/333.png' %}"
+                     alt="Comments"
+                     width="30"
+                     height="30">
+            </a>
+
+            <!-- Working Shifts -->
+            <a href="{% url 'list_working_shifts' %}">
+                <img src="{% static 'images/nav_access/444.png' %}"
+                     alt="Clock"
+                     width="30"
+                     height="30">
+            </a>
+
         </div>
 
     </div>
@@ -122,37 +151,32 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-</body>
 
 
 
-{% load static %}
 
 <div class="music-player">
     <img id="cover" src="{% static 'images/music_img' %}" class="cover" alt="">
 
-    <audio id="audio" autoplay >
+    <audio id="audio" >
         <source id="audio-source" src="{% static 'music' %}" type="audio/mpeg">
     </audio>
 
     <div class="music-info">
-        <h3 id="musicTitle">Title</h3>
-        <p id="musicArtist">Artist</p>
+        <h3 id="musicTitle"></h3>
+        <p id="musicArtist"></p>
     </div>
 
     <div class="controls">
-        <button onclick="prevSong()">|◁</button>
-        <button onclick="togglePlay()" id="playBtn">▷</button>
-        <button onclick="nextSong()">▷|</button>
+        <button onclick="prevSong()">⏭</button>
+        <button onclick="togglePlay()" id="playBtn">▶︎</button>
+        <button onclick="nextSong()">⏮</button>
     </div>
 
 
 </div>
-
-
-<script>const title = document.getElementById("musicTitle");
-const artist = document.getElementById("musicArtist");
-
+</body>
+<script>
 const songs = [
     {
         title: "Tiramisu",
@@ -160,21 +184,21 @@ const songs = [
         src: "{% static 'music/Don Toliver - Tiramisu.mp3' %}",
         cover: "{% static 'images/music_img/1.jpg' %}"
     },
-
     {
-        title: "no pole",
+        title: "No Pole",
         artist: "Don Toliver",
         src: "{% static 'music/Don Toliver - No Pole.mp3' %}",
-        cover: "{% static 'images/music_img/2.jpg' %}"    ,
-
+        cover: "{% static 'images/music_img/2.jpg' %}"
     }
 ];
 
-let currentSong = 1;
+let currentSong = 0;
 
 const audio = document.getElementById("audio");
 const source = document.getElementById("audio-source");
 const cover = document.getElementById("cover");
+const title = document.getElementById("musicTitle");
+const artist = document.getElementById("musicArtist");
 const playBtn = document.getElementById("playBtn");
 
 function loadSong(index) {
@@ -185,15 +209,15 @@ function loadSong(index) {
     audio.load();
 }
 
-
-
 function togglePlay() {
     if (audio.paused) {
         audio.play();
+        cover.classList.add("spin");
         playBtn.innerText = "❚❚";
     } else {
         audio.pause();
-        playBtn.innerText = "▷";
+        cover.classList.remove("spin");
+        playBtn.innerText = "▶︎";
     }
 }
 
@@ -201,12 +225,22 @@ function nextSong() {
     currentSong = (currentSong + 1) % songs.length;
     loadSong(currentSong);
     audio.play();
+    cover.classList.add("spin");
+    playBtn.innerText = "❚❚";
 }
 
 function prevSong() {
     currentSong = (currentSong - 1 + songs.length) % songs.length;
     loadSong(currentSong);
     audio.play();
+    cover.classList.add("spin");
+    playBtn.innerText = "❚❚";
 }
+
+// Load first song on page load
+loadSong(currentSong);
 </script>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 

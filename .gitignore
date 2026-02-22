@@ -65,3 +65,6 @@ Desktop.ini
 Secrets
 .env
 *.env
+
+
+migrations

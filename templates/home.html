@@ -15,33 +15,78 @@
             تجربه‌ای متفاوت از طعم واقعی قهوه
         </p>
 
+        <!-- Only one button with typing effect -->
         <a href="{% url 'product_list' %}" class="btn btn-warning btn-lg px-5">
-            مشاهده منو
+            <span id="typing-btn"></span>
         </a>
     </div>
 </section>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const text = "مشاهده منو"; // Text to type
+    const element = document.getElementById("typing-btn");
+    let index = 0;
+    const speed = 150; // typing speed in ms
+
+    // Start typing
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, speed);
+        } else {
+            blinkThenErase();
+        }
+    }
+
+    // Blink cursor 2 times, then erase
+    function blinkThenErase() {
+        element.classList.add("blink");  // Add blink animation
+        setTimeout(() => {
+            element.classList.remove("blink"); // Remove blink class
+            erase();
+        }, 2000); // 2 blinks × 0.5s each = 1s
+    }
+
+    // Erase text one letter at a time
+    function erase() {
+        if (index > 0) {
+            element.textContent = text.substring(0, index - 1);
+            index--;
+            setTimeout(erase, speed);
+        } else {
+            type(); // Loop again
+        }
+    }
+
+    // Start the effect
+    type();
+
+});
+</script>
 <!-- Features Section -->
 <section class="py-5 text-white" style="background-color: #000;">
     <div class="container text-center">
 
-        <h2 class="mb-5 fw-bold">ما قهوه ماریبا هستیم</h2>
+        <h2 class="mb-5 fw-bold text-start">ما قهوه ماریبا هستیم...</h2>
 
         <div class="row">
 
             <div class="col-md-3">
                 <h5 class="fw-bold">☕ کیفیت بالا</h5>
-                <p>سرو قهوه فوق‌العاده، کیک‌ها و شیرینی‌های تازه و ارائه بهترین سرویس در فضاهای زنده و به‌یادماندنی از جمله ارزش‌های ما در مجموعه‌ قهوه ماریبا است. همه هدف ما، تلاش ما و امید ما ارائه بهترین محصول با بهترین قیمت و کیفیت است.</p>
+                <p>همه هدف ما، تلاش ما و امید ما ارائه بهترین محصول با بهترین قیمت و کیفیت است.</p>
             </div>
 
             <div class="col-md-3">
                 <h5 class="fw-bold">⚡ سفارش سریع</h5>
-                <p>مدیریت آنلاین میز و محصولات</p>
+                <p>سفارش آنلاین میز و محصولات، راحت، سریع و مطمئن رزرو کنید.</p>
             </div>
 
             <div class="col-md-3">
                 <h5 class="fw-bold">🎯 تخفیف‌های ویژه</h5>
-                <p>دریافت پیشنهادهای خاص و فصلی</p>
+                <p> دریافت پیشنهادهای خاص و فصلی ، فرصت‌های محدود را از دست ندهید.</p>
             </div>
 
         </div>

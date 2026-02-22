@@ -3,6 +3,32 @@
     background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93") center/cover no-repeat;
 }
 
+#typing-btn {
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+}
+
+/* Cursor pseudo-element */
+#typing-btn::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1.5em;
+    background-color: #000;
+    margin-left: 2px;
+    vertical-align: bottom;
+}
+
+.blink::after {
+    animation: blink 1s step-end 3; /* blink 2 times */
+}
+
+@keyframes blink {
+    0%, 50%, 100% { background-color: #000; }
+    25%, 75% { background-color: transparent; }
+}
 .navbar .nav-link {
     transition: 0.4s;
 }
@@ -11,6 +37,18 @@
     color: darkorange !important;
 }
 
+.nav-clock {
+    background: linear-gradient(135deg, #222, #111);
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: darkgray;
+    font-family:'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 1px;
+    min-width: 70px;
+    text-align: center;
+}
 
 .music-player {
     position: fixed;
@@ -34,10 +72,19 @@
 .cover {
     width: 90px;
     height: 90px;
-    border-radius: 70%;
-    border: 1px solid darkgray;
+    border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
+}
+
+/* spinning animation */
+.spin {
+    animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 
@@ -53,6 +100,10 @@
 
 
 
+
+
+
+
 body {
     background-image: url('/static/images/background/7.jpg'); /* change path */
     background-size: cover;        /* fills whole screen */
@@ -60,6 +111,7 @@ body {
     background-repeat: no-repeat;  /* no repeating */
     background-attachment: fixed;  /* optional smooth effect */
 }
+
 .navbar {
     background-color: rgba(0, 0, 0, 0.8) !important;
 }

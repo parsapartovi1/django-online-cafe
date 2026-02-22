@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib import messages
 from django.views import View
 from .models import User , Reply
-from django.contrib.auth import authenticate, login, logout
 from .models import Comment, Product
 from django.http import HttpResponseBadRequest
 from .models import WorkingShift
@@ -107,7 +106,7 @@ class ChangePasswordView(View):
         messages.success(request, 'Password changed successfully.')
         return redirect('user_profile')
 
-
+@login_required
 def create_comment(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
@@ -133,7 +132,7 @@ def create_comment(request, product_id):
             com_rate=com_rate
         )
 
-        return redirect('product_detail', product_id=product.id)
+        return redirect('product_detail', pk=product.id)
 
 
     return render(request, 'user/create_comment.html', {'product': product})

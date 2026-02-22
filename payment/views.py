@@ -1,24 +1,20 @@
 from django.views.generic import ListView, DetailView
-from .models import Order
-
-
-class OrderList(ListView):
-    model = Order
-    template_name = "order_list.html"
-
-
-class OrderDetailView(DetailView):
-    model = Order
-    template_name = "payment/order_detail.html"
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseBadRequest
+from .models import Pay, Order
 
 
 # Create your views here.
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseBadRequest
-from .models import Pay, Order
-from templates import payment
+class OrderList(ListView):
+    model = Order
+    template_name = "payment/order_list.html"
+
+
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = "payment/order_detail.html"
 
 
 def create_payment(request):
