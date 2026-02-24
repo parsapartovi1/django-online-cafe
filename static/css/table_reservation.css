@@ -2,6 +2,27 @@
   --clr-primary: darkorange;
   --clr-secondary: black;
 }
+
+body.table-reservation-page {
+    background:
+        radial-gradient(circle at 8% 12%, rgba(255, 181, 108, 0.36), transparent 40%),
+        radial-gradient(circle at 92% 18%, rgba(215, 128, 86, 0.27), transparent 38%),
+        radial-gradient(circle at 78% 86%, rgba(127, 82, 54, 0.24), transparent 44%),
+        linear-gradient(145deg, #fff4e8 0%, #f3dcc0 55%, #e7c19d 100%) !important;
+    background-attachment: fixed !important;
+}
+
+.table-reservation-section {
+    min-height: calc(100vh - 84px);
+    padding: 56px 0 64px;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(255, 250, 242, 0.72) 0%,
+            rgba(255, 246, 234, 0.72) 100%
+        );
+}
+
 /* =========================
    PAGE BACKGROUND
 ========================= */
@@ -31,6 +52,24 @@ main {
     border-bottom: 2px solid #8b5a2b;
     padding-bottom: 12px;
     display: inline-block;
+}
+
+.working-hours-box {
+    background: rgba(255, 255, 255, 0.84);
+    border: 1px solid rgba(139, 90, 43, 0.24);
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.working-hours-box h5 {
+    color: #5f3617;
+}
+
+.working-hours-item {
+    background: #fff8ef;
+    border: 1px solid #edd7c3;
+    border-radius: 10px;
+    padding: 12px;
 }
 
 
@@ -63,6 +102,8 @@ main {
     border-radius: 14px;
     overflow: hidden;
     transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(1px);
 }
 
 .table-reservation-card:hover {
@@ -152,4 +193,11 @@ main {
 
 .empty-title {
     color: #8b5a2b;
+}
+
+@media (max-width: 768px) {
+    .table-reservation-section {
+        min-height: calc(100vh - 72px);
+        padding: 34px 0 42px;
+    }
 }

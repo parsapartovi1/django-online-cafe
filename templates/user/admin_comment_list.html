@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}همه کامنت‌ها{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">همه کامنت‌های کاربران</h3>
+        <a href="{% url 'order-list' %}" class="btn btn-outline-secondary">همه رزروها</a>
+    </div>
+
+    {% if comments %}
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>تاریخ</th>
+                        <th>کاربر</th>
+                        <th>خوراکی</th>
+                        <th>امتیاز</th>
+                        <th>متن</th>
+                        <th>پاسخ مدیر</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comment in comments %}
+                        <tr class="{% if comment.is_delete %}table-danger{% endif %}">
+                            <td>{{ comment.create_date|date:"Y-m-d H:i" }}</td>
+                            <td>
+                                {% if comment.user.first_name or comment.user.last_name %}
+                                    {{ comment.user.first_name }} {{ comment.user.last_name }}
+                                {% else %}
+                                    {{ comment.user.number }}
+                                {% endif %}
+                            </td>
+                            <td>{{ comment.product.name }}</td>
+                            <td>{{ comment.com_rate }}</td>
+                            <td style="max-width: 300px;">{{ comment.text }}</td>
+                            <td style="max-width: 260px;">
+                                {% if comment.reply %}
+                                    {{ comment.reply.text }}
+                                {% else %}
+                                    <span class="text-muted">بدون پاسخ</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    {% if not comment.reply and not comment.is_delete %}
+                                        <a href="{% url 'add_reply' comment.id %}?next={{ request.path }}" class="btn btn-sm btn-primary">پاسخ</a>
+                                    {% endif %}
+
+                                    {% if comment.reply %}
+                                        <form method="POST" action="{% url 'delete_reply' comment.reply.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button class="btn btn-sm btn-outline-danger">حذف پاسخ</button>
+                                        </form>
+                                    {% endif %}
+
+                                    {% if not comment.is_delete %}
+                                        <form method="POST" action="{% url 'delete_comment' comment.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button class="btn btn-sm btn-danger">حذف کامنت</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted">کامنتی ثبت نشده است.</p>
+    {% endif %}
+</div>
+{% endblock %}

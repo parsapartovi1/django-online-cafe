@@ -10,18 +10,43 @@
 </style>
 
 {% block content %}
-    <link rel="stylesheet" href="{% static 'css/work_shift/list_working_shift.css' %}">
+<link rel="stylesheet" href="{% static 'css/work_shift/list_working_shift.css' %}">
 <div class="shift-page">
     <div class="container">
-        <h2>ساعات کاری کافه</h2>
+        <h2>ساعات کاری هفتگی کافه</h2>
 
-        <ul>
-        {% for shift in shifts %}
-            <li>{{ shift.weekdays }}: {{ shift.opening_date }} - {{ shift.closed_date }}</li>
-        {% empty %}
-            <li class="empty"> ظاهرا تعطیلیم  !</li>
-        {% endfor %}
-        </ul>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>روز هفته</th>
+                        <th>وضعیت</th>
+                        <th>ساعت شروع</th>
+                        <th>ساعت پایان</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in weekly_schedule %}
+                        <tr>
+                            <td>{{ item.weekday_label }}</td>
+                            <td>
+                                {% if item.is_open %}
+                                    <span class="badge bg-success">باز</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">تعطیل</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.opens_at %}{{ item.opens_at|time:"H:i" }}{% else %}-{% endif %}
+                            </td>
+                            <td>
+                                {% if item.closes_at %}{{ item.closes_at|time:"H:i" }}{% else %}-{% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

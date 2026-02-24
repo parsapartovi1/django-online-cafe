@@ -1,79 +1,118 @@
-from django.db import models
-from serveHub.models import Product
-from django.core.validators import MinValueValidator, MaxValueValidator
-from .choices import WeekDays
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+
+from serveHub.models import Product
+
+from .choices import WeekDays
 
 
-class User(models.Model):
+class UserManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, number, email, password=None, **extra_fields):
+        if not number:
+            raise ValueError("The number must be set.")
+        if not email:
+            raise ValueError("The email must be set.")
+
+        user = self.model(
+            number=str(number),
+            email=self.normalize_email(email),
+            **extra_fields,
+        )
+        if password is None:
+            user.set_unusable_password()
+        else:
+            user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, number, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
+        return self._create_user(number, email, password, **extra_fields)
+
+    def create_superuser(self, number, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+
+        return self._create_user(number, email, password, **extra_fields)
+
+
+class User(AbstractUser):
+    username = None
+
     first_name = models.CharField(
         max_length=24,
-        verbose_name='first name',
-        help_text='Enter your first name',
-        blank=False,
-        null=False
+        verbose_name="first name",
+        help_text="Enter your first name",
+        blank=True,
+        default="",
     )
 
     last_name = models.CharField(
         max_length=24,
-        verbose_name='last name',
-        help_text='Enter your last name',
-        blank=False,
-        null=False
+        verbose_name="last name",
+        help_text="Enter your last name",
+        blank=True,
+        default="",
+    )
+
+    email = models.EmailField(
+        verbose_name="email address",
+        help_text="Enter your email",
     )
 
     number = models.CharField(
         max_length=11,
-        verbose_name='number',
-        help_text='Enter your number',
-        unique=True,              
-        blank=False,
-        null=False
-    )
-
-    password = models.CharField(
-        max_length=255,            
-        verbose_name='password',
-        help_text='Enter your password',
-        blank=False,
-        null=False
+        verbose_name="number",
+        help_text="Enter your number",
+        unique=True,
     )
 
     user_rate = models.FloatField(
-        verbose_name='user rate',
-        default=0
-    )
-
-    is_staff = models.BooleanField(
-        verbose_name='staff status',
-        default=False
+        verbose_name="user rate",
+        default=0,
     )
 
     user_presence = models.BooleanField(
-        verbose_name='user presence',
-        default=False
+        verbose_name="user presence",
+        default=False,
     )
 
     create_date = models.DateTimeField(
-        verbose_name='creation date',
-        auto_now_add=True  
+        verbose_name="creation date",
+        auto_now_add=True,
     )
 
     last_update = models.DateTimeField(
-        verbose_name='last update',
-        auto_now=True
+        verbose_name="last update",
+        auto_now=True,
     )
+
+    USERNAME_FIELD = "number"
+    REQUIRED_FIELDS = ["email"]
+
+    objects = UserManager()
 
     class Meta:
         verbose_name = "1. user"
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        full_name = f"{self.first_name} {self.last_name}".strip()
+        return full_name or self.number
 
 
 class Comment(models.Model):
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         verbose_name='user',
         help_text='Select the user who wrote the comment'
@@ -84,6 +123,15 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         verbose_name='product',
         help_text='Select the product related to this comment'
+    )
+
+    reservation = models.ForeignKey(
+        'payment.Reservation',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='comments',
+        verbose_name='reservation',
     )
 
     text = models.TextField(
@@ -106,6 +154,11 @@ class Comment(models.Model):
         default=False
     )
 
+    is_locked = models.BooleanField(
+        verbose_name='comment locked',
+        default=False,
+    )
+
     create_date = models.DateTimeField(
         verbose_name='creation date',
         auto_now_add=True
@@ -125,7 +178,7 @@ class Comment(models.Model):
 
 class Reply(models.Model):
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         verbose_name='user',
     )
@@ -160,12 +213,6 @@ class Reply(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} to {self.comment.user.first_name}"
-
-
-
-from django.conf import settings
-from django.db import models
-
 
 class WorkingShift(models.Model):
     user = models.ForeignKey(

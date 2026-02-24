@@ -1,85 +1,111 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 
-{% block title %}سفارش‌های من - ماریبا کافی{% endblock %}
+{% block title %}
+{% if is_manager %}مدیریت رزروها{% else %}رزروهای من{% endif %}
+{% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" href="{% static 'css/order/order_list.css' %}">
-<body class="dark-navbar-page">
-<div class="container py-5">
+<link rel="stylesheet" href="{% static 'css/order/order_list.css' %}">
 
+<div class="container py-5">
     <div class="text-center mb-5">
-        <h1 class="page-title">سفارش‌های من</h1>
-        <p class="lead text-muted">تاریخچه سفارش‌ها و وضعیت فعلی</p>
+        <h1 class="page-title">
+            {% if is_manager %}مدیریت رزروهای کافه{% else %}رزروهای من{% endif %}
+        </h1>
+        <p class="lead text-muted">
+            {% if is_manager %}
+                لیست کامل رزروها، خوراکی‌ها و وضعیت حضور مشتریان
+            {% else %}
+                مشاهده جزئیات رزرو میز و خوراکی‌های ثبت‌شده
+            {% endif %}
+        </p>
     </div>
 
-    {% if orders %}
-
+    {% if reservations %}
         <div class="row g-4">
-
-            {% for order in orders %}
-
+            {% for reservation in reservations %}
                 <div class="col-lg-6 col-xl-4">
-                    <div class="order-card {% if order.order_status %}delivered{% else %}pending{% endif %}">
-
+                    <div class="order-card">
                         <div class="order-header">
                             <div>
-                                <h5 class="order-id mb-1">سفارش #{{ order.id }}</h5>
-                                <small class="text-muted">{{ order.create_date|date:"j F Y – H:i" }}</small>
+                                <h5 class="order-id mb-1">رزرو #{{ reservation.id }}</h5>
+                                <small class="text-muted">
+                                    {{ reservation.start_time|date:"Y-m-d H:i" }}
+                                    تا
+                                    {{ reservation.end_time|date:"H:i" }}
+                                </small>
                             </div>
-                            <span class="status-badge {% if order.order_status %}bg-success{% else %}bg-warning{% endif %}">
-                                {% if order.order_status %}تحویل شده{% else %}در انتظار{% endif %}
+                            <span class="status-badge {% if reservation.status == 'reserved' %}bg-success{% else %}bg-danger{% endif %}">
+                                {{ reservation.get_status_display }}
                             </span>
                         </div>
 
                         <div class="order-body">
-                            <div class="product-preview d-flex align-items-center mb-3">
-                                {% if order.product.image %}
-                                    <img src="{{ order.product.image.url }}" alt="{{ order.product.name }}" class="product-img me-3">
-                                {% else %}
-                                    <div class="no-img me-3"><i class="bi bi-cup-hot"></i></div>
-                                {% endif %}
-                                <div>
-                                    <h6 class="mb-1">{{ order.product.name }}</h6>
-                                    <small>میز شماره {{ order.table.table_number }}</small>
-                                </div>
+                            <div class="mb-2">
+                                <strong>میز:</strong> {{ reservation.table.table_number }}
                             </div>
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="total-price">
-                                    {{ order.total_amount|floatformat:0 }} تومان
+                            <div class="mb-2">
+                                <strong>نوع میز:</strong> {{ reservation.table.get_table_type_display }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>تعداد نفرات:</strong> {{ reservation.people_count }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>وضعیت حضور:</strong> {{ reservation.get_attendance_status_display }}
+                            </div>
+                            <div class="mb-2">
+                                <strong>تایید رزرو:</strong> {{ reservation.get_manager_decision_display }}
+                            </div>
+                            {% if is_manager %}
+                                <div class="mb-2">
+                                    <strong>مشتری:</strong> {{ reservation.user.number }} ({{ reservation.user.email }})
                                 </div>
-                                {% if order.cancellation %}
-                                    <span class="badge bg-danger">لغو شده</span>
-                                {% endif %}
+                            {% endif %}
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="total-price">
+                                    {{ reservation.total_cost|intcomma }} تومان
+                                </div>
+                                <small class="text-muted">
+                                    {{ reservation.items.count }} خوراکی
+                                </small>
                             </div>
                         </div>
 
                         <div class="order-footer">
-                            <a href="{% url 'order-detail' order.pk %}" class="btn btn-outline-primary w-100">
+                            <a href="{% url 'order-detail' reservation.id %}" class="btn btn-outline-primary w-100">
                                 مشاهده جزئیات
                             </a>
+                            {% if is_manager and reservation.status == "reserved" %}
+                                <form method="POST" action="{% url 'set_reservation_decision' reservation.id %}" class="d-grid gap-2 mt-2">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-primary" name="manager_decision" value="approved">
+                                        تایید رزرو
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" name="manager_decision" value="rejected">
+                                        عدم تایید رزرو
+                                    </button>
+                                </form>
+                            {% endif %}
                         </div>
-
                     </div>
                 </div>
-
             {% endfor %}
-
         </div>
-
     {% else %}
-
         <div class="text-center py-5 my-5 empty-state">
-            <i class="bi bi-receipt display-1 text-muted opacity-50"></i>
-            <h4 class="mt-4">هنوز سفارشی ثبت نشده است</h4>
-            <a href="{% url 'product_list' %}" class="btn btn-primary mt-3 px-4">
-                ثبت سفارش
+            <h4 class="mt-4">
+                {% if is_manager %}
+                    هنوز رزروی ثبت نشده است.
+                {% else %}
+                    هنوز رزروی ندارید.
+                {% endif %}
+            </h4>
+            <a href="{% url 'table_reservation' %}" class="btn btn-primary mt-3 px-4">
+                رزرو میز
             </a>
         </div>
-
     {% endif %}
-
 </div>
-
 {% endblock %}

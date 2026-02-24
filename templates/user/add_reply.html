@@ -1,38 +1,45 @@
-{% load static %}
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پاسخ به کامنت</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h2>پاسخ به کامنت</h2>
+{% block title %}پاسخ به نظر{% endblock %}
 
-        
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <p class="message {{ message.tags }}">{{ message }}</p>
-                {% endfor %}
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 760px;">
+        <div class="card-body p-4 p-md-5">
+            <h4 class="mb-4">ثبت پاسخ مدیر</h4>
+
+            <div class="bg-light border rounded p-3 mb-4">
+                <div class="small text-muted mb-1">نظر مشتری:</div>
+                <p class="mb-0">{{ comment.text }}</p>
             </div>
-        {% endif %}
 
-        
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="text">محتوای پاسخ</label>
-                <textarea name="text" id="text" rows="4" placeholder="پاسخ خود را وارد کنید" required></textarea>
-            </div>
-            <button type="submit">ارسال پاسخ</button>
-        </form>
+            <form method="POST">
+                {% csrf_token %}
+                {% if next_url %}
+                    <input type="hidden" name="next" value="{{ next_url }}">
+                {% endif %}
+                <div class="mb-3">
+                    <label for="text" class="form-label">متن پاسخ</label>
+                    <textarea class="form-control"
+                              id="text"
+                              name="text"
+                              rows="5"
+                              placeholder="پاسخ خود را وارد کنید"
+                              required></textarea>
+                </div>
 
-        <br>
-        <a href="{% url 'comment_detail' comment.id %}">برگشت به کامنت</a>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">ثبت پاسخ</button>
+                    {% if next_url %}
+                        <a href="{{ next_url }}" class="btn btn-outline-secondary">بازگشت</a>
+                    {% else %}
+                        <a href="{% url 'product_detail' comment.product.id %}" class="btn btn-outline-secondary">
+                            بازگشت
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

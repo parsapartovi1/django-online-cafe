@@ -4,40 +4,42 @@
 
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/music_page.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 {% endblock %}
+{% block body_class %}music-page-body{% endblock %}
 
 
 {% block content %}
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<section class="music-page">
+    <div class="player-container">
 
-<div class="player-container">
+        <!-- LEFT SIDE -->
+        <div class="player-left">
+            <div class="music-info">
+                <h1 id="musicTitle"></h1>
+                <h3 id="musicArtist"></h3>
+            </div>
 
-    <!-- LEFT SIDE -->
-    <div class="player-left">
-        <div class="music-info">
-            <h1 id="musicTitle"></h1>
-            <h3 id="musicArtist"></h3>
+            <div class="controls">
+                <button onclick="nextSong()">⏭</button>
+                <button onclick="togglePlay()" id="playBtn">▶</button>
+                <button onclick="prevSong()">⏮</button>
+            </div>
         </div>
 
-        <div class="controls">
-            <button onclick="prevSong()">⏮</button>
-            <button onclick="togglePlay()" id="playBtn">▶</button>
-            <button onclick="nextSong()">⏭</button>
+        <!-- RIGHT SIDE -->
+        <div class="player-right">
+            <img id="cover" class="cover" alt="Cover">
         </div>
+
+        <audio id="audio">
+            <source id="audio-source" type="audio/mpeg">
+        </audio>
+
     </div>
-
-    <!-- RIGHT SIDE -->
-    <div class="player-right">
-        <img id="cover" class="cover" alt="Cover">
-    </div>
-
-    <audio id="audio">
-        <source id="audio-source" type="audio/mpeg">
-    </audio>
-
-</div>
+</section>
 
 <script>
 const songs = [

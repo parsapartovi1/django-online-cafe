@@ -40,34 +40,6 @@
         <form method="POST">
             {% csrf_token %}
 
-            <!-- Name -->
-            <div class="mb-3">
-                <label class="form-label">نام</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-dark text-warning border-secondary">
-                        <i class="bi bi-person"></i>
-                    </span>
-                    <input type="text"
-                           name="first_name"
-                           class="form-control bg-dark text-white border-secondary"
-                           placeholder="نام">
-                </div>
-            </div>
-
-            <!-- Family Name -->
-            <div class="mb-3">
-                <label class="form-label">نام خانوادگی</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-dark text-warning border-secondary">
-                        <i class="bi bi-person-badge"></i>
-                    </span>
-                    <input type="text"
-                           name="last_name"
-                           class="form-control bg-dark text-white border-secondary"
-                           placeholder="نام خانوادگی">
-                </div>
-            </div>
-
             <!-- Phone Number -->
             <div class="mb-3">
                 <label class="form-label">شماره تماس</label>
@@ -79,6 +51,20 @@
                            name="number"
                            class="form-control bg-dark text-white border-secondary"
                            placeholder="مثال: 09123456789">
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label class="form-label">ایمیل</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-warning border-secondary">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+                    <input type="email"
+                           name="email"
+                           class="form-control bg-dark text-white border-secondary"
+                           placeholder="you@example.com">
                 </div>
             </div>
 

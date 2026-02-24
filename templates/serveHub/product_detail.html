@@ -8,204 +8,145 @@
 
 {% block content %}
 <div class="container py-5">
-
     <div class="row align-items-center">
-
-        <!-- RIGHT SIDE IMAGE -->
         <div class="col-md-6 text-center">
             {% if product.image %}
                 <img src="{{ product.image.url }}"
                      class="img-fluid rounded shadow"
-                     style="max-height:500px;">
+                     style="max-height:500px;"
+                     alt="{{ product.name }}">
             {% endif %}
         </div>
 
-        <!-- LEFT SIDE INFO -->
         <div class="col-md-6">
-
             <h2 class="fw-bold mb-3">{{ product.name }}</h2>
 
-            <!-- SIZE SELECTION -->
             <p>سایز:</p>
             <div id="size-buttons" class="mb-3">
-
-                {% if product.size.size1 %}
+                {% if product.size and product.size.size1 %}
                     <span class="size-badge active"
-                          data-price="{{ product.size.get_final_price1 }}"
+                          data-price="{{ product.get_price_size1 }}"
                           data-original="{{ product.size.price1 }}">
                         {{ product.size.size1 }}
                     </span>
                 {% endif %}
 
-                {% if product.size.size2 %}
+                {% if product.size and product.size.size2 %}
                     <span class="size-badge"
-                          data-price="{{ product.size.get_final_price2 }}"
+                          data-price="{{ product.get_price_size2 }}"
                           data-original="{{ product.size.price2 }}">
                         {{ product.size.size2 }}
                     </span>
                 {% endif %}
 
-                {% if product.size.size3 %}
+                {% if product.size and product.size.size3 %}
                     <span class="size-badge"
-                          data-price="{{ product.size.get_final_price3 }}"
+                          data-price="{{ product.get_price_size3 }}"
                           data-original="{{ product.size.price3 }}">
                         {{ product.size.size3 }}
                     </span>
                 {% endif %}
-
             </div>
 
             <p class="text-muted">{{ product.description }}</p>
+            <h5 class="mb-3">⭐ {{ product.get_average_rating }}</h5>
 
-            <!-- Average Rating -->
-            <h5 class="mb-3">
-                ⭐ {{ product.get_average_rating }}
-            </h5>
-
-            <!-- PRICE SECTION -->
-            {% if product.size.has_active_discount %}
-
+            {% if product.size and product.get_active_discount_percent %}
                 <div class="discount-box">
-                    <div class="ribbon">
-                        {{ product.size.discount.amount }}%
-                    </div>
-                    تخفیف ویژه
+                    <div class="ribbon">{{ product.get_active_discount_percent }}%</div>
+                    تخفیف فعال
                 </div>
-
-                <div class="old-price" id="old-price">
-                    {{ product.size.price1|intcomma }} تومان
-                </div>
-
-                <div class="new-price text-danger" id="product-price">
-                    {{ product.size.get_final_price1|intcomma }} تومان
-                </div>
-
-            {% else %}
-
+                <div class="old-price" id="old-price">{{ product.size.price1|intcomma }} تومان</div>
                 <div class="new-price text-dark" id="product-price">
-                    {{ product.size.price1|intcomma }} تومان
+                    {{ product.get_price_size1|intcomma }} تومان
                 </div>
-
+            {% else %}
+                <div class="new-price text-dark" id="product-price">
+                    {{ product.get_price_size1|intcomma }} تومان
+                </div>
             {% endif %}
 
-            <!-- Add to Cart -->
-            <form method="POST" action="{% url 'add_to_cart' product.id %}">
-                {% csrf_token %}
-                <button class="btn btn-warning mt-3">
-                    افزودن به سبد خرید
-                </button>
-            </form>
-
+            <a href="{% url 'order-list' %}" class="btn btn-warning mt-3">
+                افزودن خوراکی از صفحه رزرو
+            </a>
         </div>
     </div>
 
     <hr class="my-5">
 
-    <!-- COMMENTS SECTION -->
-    <h4 class="mb-4">نظرات کاربران</h4>
-
-    {% if user.is_authenticated %}
-    <form method="POST" action="{% url 'create_comment' product.id %}">
-        {% csrf_token %}
-
-        <textarea name="text"
-                  class="form-control mb-3"
-                  placeholder="نظر خود را بنویسید..."
-                  required></textarea>
-
-        <div class="star-rating mb-3">
-            {% for i in "12345" %}
-                <span class="star" data-value="{{ forloop.counter }}">☆</span>
-            {% endfor %}
-        </div>
-
-        <input type="hidden"
-               name="com_rate"
-               id="rating-value"
-               required>
-
-        <button id="submit-btn"
-                class="btn btn-dark d-none">
-            ثبت نظر
-        </button>
-    </form>
-    {% else %}
-        <p>برای ثبت نظر باید وارد حساب کاربری شوید.</p>
-    {% endif %}
-
-    <hr>
+    <h4 class="mb-3">نظرات کاربران</h4>
+    <p class="text-muted">
+        ثبت نظر فقط از صفحه جزئیات رزرو و پس از تایید حضور توسط مدیر امکان‌پذیر است.
+        <a href="{% url 'order-list' %}">مشاهده رزروهای من</a>
+    </p>
 
     {% for comment in comments %}
         <div class="border p-3 mb-3 rounded shadow-sm">
-            <strong>{{ comment.user.first_name }}</strong>
-            <span class="text-warning">⭐ {{ comment.com_rate }}</span>
-            <p class="mt-2">{{ comment.text }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <strong>
+                    {% if comment.user.first_name or comment.user.last_name %}
+                        {{ comment.user.first_name }} {{ comment.user.last_name }}
+                    {% else %}
+                        {{ comment.user.number }}
+                    {% endif %}
+                </strong>
+                <span class="text-warning">⭐ {{ comment.com_rate }}</span>
+            </div>
+
+            <p class="mt-2 mb-2">{{ comment.text }}</p>
+
+            {% if comment.reply %}
+                <div class="alert alert-light border mb-2">
+                    <strong>پاسخ مدیر:</strong> {{ comment.reply.text }}
+                </div>
+            {% endif %}
+
+            <div class="d-flex gap-2 flex-wrap">
+                {% if user.is_staff and not comment.reply %}
+                    <a href="{% url 'add_reply' comment.id %}" class="btn btn-sm btn-outline-primary">
+                        پاسخ مدیر
+                    </a>
+                {% endif %}
+
+                {% if user.is_staff or user == comment.user %}
+                    <form method="POST" action="{% url 'delete_comment' comment.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">حذف نظر</button>
+                    </form>
+                {% endif %}
+
+                {% if comment.reply and user.is_staff %}
+                    <form method="POST" action="{% url 'delete_reply' comment.reply.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">حذف پاسخ</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
     {% empty %}
         <p>هنوز نظری ثبت نشده است.</p>
     {% endfor %}
-
-
-{% for comment in comments %}
-    <div class="border p-3 mb-3 rounded shadow-sm">
-        <strong>{{ comment.user.first_name }}</strong>
-        <span class="text-warning">⭐ {{ comment.com_rate }}</span>
-        <p class="mt-2">{{ comment.text }}</p>
-
-        {% if request.user == comment.user %}
-            <form method="POST"
-                  action="{% url 'delete_comment' comment.id %}">
-                {% csrf_token %}
-                <button class="btn btn-sm btn-danger mt-2">
-                    حذف نظر
-                </button>
-            </form>
-        {% endif %}
-    </div>
-{% endfor %}
 </div>
 
-<!-- ⭐ SCRIPT -->
 <script>
-const stars = document.querySelectorAll(".star");
-const input = document.getElementById("rating-value");
-const btn = document.getElementById("submit-btn");
-
-stars.forEach((star, index) => {
-    star.addEventListener("click", function() {
-        let value = index + 1;
-        input.value = value;
-        btn.classList.remove("d-none");
-
-        stars.forEach(s => s.textContent = "☆");
-        for (let i = 0; i < value; i++) {
-            stars[i].textContent = "⭐";
-        }
-    });
-});
-
 const sizeButtons = document.querySelectorAll(".size-badge");
 const newPriceDisplay = document.getElementById("product-price");
 const oldPriceDisplay = document.getElementById("old-price");
 
-sizeButtons.forEach(btn => {
-    btn.addEventListener("click", function() {
-
-        sizeButtons.forEach(b => b.classList.remove("active"));
+sizeButtons.forEach((btn) => {
+    btn.addEventListener("click", function () {
+        sizeButtons.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
 
         const finalPrice = btn.getAttribute("data-price");
         const originalPrice = btn.getAttribute("data-original");
-
-        if (oldPriceDisplay && originalPrice) {
-            oldPriceDisplay.textContent =
-                Number(originalPrice).toLocaleString() + " تومان";
+        if (newPriceDisplay && finalPrice) {
+            newPriceDisplay.textContent = Number(finalPrice).toLocaleString() + " تومان";
         }
-
-        newPriceDisplay.textContent =
-            Number(finalPrice).toLocaleString() + " تومان";
+        if (oldPriceDisplay && originalPrice) {
+            oldPriceDisplay.textContent = Number(originalPrice).toLocaleString() + " تومان";
+        }
     });
 });
 </script>
-
 {% endblock %}

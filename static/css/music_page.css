@@ -1,85 +1,155 @@
-/* Page background */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Playfair Display', serif;
-    background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
-    color: white;
-    height: 100vh;
+body.music-page-body {
+    background:
+        linear-gradient(rgba(19, 14, 10, 0.78), rgba(19, 14, 10, 0.78)),
+        url("/static/images/music_img/spen.jpg") center center / cover no-repeat !important;
+    background-attachment: fixed !important;
+}
+
+body.music-page-body .navbar {
+    background-color: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+.music-page {
+    min-height: calc(100vh - 84px);
+    padding: 44px 18px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: "Playfair Display", serif;
+    color: #f8f1e8;
+    background: transparent;
 }
 
-/* Main layout */
-.player-container {
-    width: 85%;
-    max-width: 1200px;
+.music-page .player-container {
+    width: min(1120px, 95%);
+    padding: 38px 44px;
+    border-radius: 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 58px;
+    background: rgba(23, 15, 10, 0.58);
+    border: 1px solid rgba(255, 226, 189, 0.28);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
 }
 
-/* LEFT SIDE */
-.player-left {
+.music-page .player-left {
     flex: 1;
 }
 
-.music-info h1 {
-    font-size: 48px;
+.music-page .music-info h1 {
+    font-size: clamp(2.4rem, 4.8vw, 4rem);
     margin: 0;
+    color: #fff5e7;
 }
 
-.music-info h3 {
-    font-size: 24px;
-    margin-top: 10px;
+.music-page .music-info h3 {
+    font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+    margin-top: 12px;
     font-weight: 400;
-    color: #aaa;
+    color: #f1d7b6;
 }
 
-/* Controls */
-.controls {
-    margin-top: 40px;
+.music-page .controls {
+    margin-top: 42px;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
 }
 
-.controls button {
-    background: none;
-    border: 2px solid white;
-    color: white;
-    font-size: 24px;
-    padding: 12px 20px;
-    margin-right: 15px;
-    border-radius: 50px;
+.music-page .controls button {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid #f8dfbf;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff4e5;
+    font-size: 2rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: 0.3s;
+    transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease;
 }
 
-.controls button:hover {
-    background: white;
-    color: black;
+.music-page .controls button:hover {
+    background: #f8dfbf;
+    color: #26180f;
+    transform: translateY(-2px);
 }
 
-/* RIGHT SIDE */
-.player-right {
+.music-page #playBtn {
+    width: 86px;
+    height: 86px;
+    font-size: 2.3rem;
+}
+
+.music-page .player-right {
     flex: 1;
     display: flex;
     justify-content: center;
 }
 
-.cover {
-    width: 400px;
-    height: 400px;
+.music-page .cover {
+    width: min(520px, 80vw);
+    height: min(520px, 80vw);
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 0 50px rgba(255,255,255,0.2);
+    border: 10px solid rgba(255, 238, 219, 0.28);
+    box-shadow: 0 0 64px rgba(255, 208, 157, 0.32);
 }
 
-/* Spinning animation */
-.spin {
-    animation: spin 6s linear infinite;
+.music-page .spin {
+    animation: spin 8s linear infinite;
 }
 
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+@media (max-width: 992px) {
+    .music-page .player-container {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 30px;
+        padding: 28px 20px 32px;
+    }
+
+    .music-page .controls {
+        justify-content: center;
+    }
+
+    .music-page .cover {
+        width: min(430px, 78vw);
+        height: min(430px, 78vw);
+    }
+}
+
+@media (max-width: 576px) {
+    .music-page {
+        min-height: calc(100vh - 72px);
+        padding: 24px 12px;
+    }
+
+    .music-page .controls button {
+        width: 62px;
+        height: 62px;
+        font-size: 1.75rem;
+    }
+
+    .music-page #playBtn {
+        width: 74px;
+        height: 74px;
+        font-size: 2rem;
+    }
+
+    .music-page .cover {
+        width: min(330px, 82vw);
+        height: min(330px, 82vw);
+    }
 }

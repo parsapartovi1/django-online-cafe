@@ -7,7 +7,7 @@
     <h2 class="mb-4 text-center fw-bold">شیفت‌های کاری کاربران</h2>
 
     <div class="text-end mb-3">
-        <a href="{% url 'user:create_working_shift' %}" class="btn btn-dark">
+        <a href="{% url 'create_working_shift' %}" class="btn btn-dark">
             + اضافه کردن شیفت
         </a>
     </div>
@@ -27,17 +27,12 @@
                 <tbody>
                     {% for shift in shifts %}
                         <tr>
-                            <td>{{ shift.user.username }}</td>
+                            <td>{{ shift.user.first_name }} {{ shift.user.last_name }}</td>
                             <td>{{ shift.weekdays }}</td>
                             <td>{{ shift.opening_date|date:"Y-m-d H:i" }}</td>
                             <td>{{ shift.closed_date|date:"Y-m-d H:i" }}</td>
                             <td>
-                                <a href="{% url 'user:edit_working_shift' shift.id %}" class="btn btn-sm btn-outline-warning me-1">
-                                    ویرایش
-                                </a>
-                                <a href="{% url 'user:delete_working_shift' shift.id %}" class="btn btn-sm btn-outline-danger">
-                                    حذف
-                                </a>
+                                <span class="text-muted">-</span>
                             </td>
                         </tr>
                     {% endfor %}
@@ -52,4 +47,3 @@
 
 </div>
 {% endblock %}
-

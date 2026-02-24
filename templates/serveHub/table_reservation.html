@@ -3,9 +3,21 @@
 {% load humanize %}
 
 {% block title %}رزرو میز | قهوه ماریبا{% endblock %}
+{% block body_class %}table-reservation-page{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/table_reservation.css' %}">
+<style>
+    html body.table-reservation-page {
+        background-image:
+            radial-gradient(circle at 10% 14%, rgba(255, 188, 120, 0.42), transparent 42%),
+            radial-gradient(circle at 90% 18%, rgba(222, 128, 78, 0.32), transparent 36%),
+            radial-gradient(circle at 84% 86%, rgba(119, 68, 42, 0.26), transparent 44%),
+            linear-gradient(145deg, #fff7ef 0%, #f3dfc7 52%, #e7bc8f 100%) !important;
+        background-color: #f3dfc7 !important;
+        background-attachment: fixed !important;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -16,6 +28,36 @@
         <h1 class="mb-5 text-center table-reservation-title">
             🪑 رزرو میز در کافه ماریبا
         </h1>
+        <p class="text-center text-muted mb-4">
+            بازه زمانی رزرو هر میز بر اساس مدت زمان همان میز انجام می‌شود و باید داخل ساعات کاری کافه باشد.
+        </p>
+
+        <div class="working-hours-box mb-5">
+            <h5 class="mb-3">ساعات کاری هفتگی کافه</h5>
+            <div class="row g-2">
+                {% for item in weekly_working_hours %}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="working-hours-item">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <strong>{{ item.weekday_label }}</strong>
+                                {% if item.is_open %}
+                                    <span class="badge bg-success">باز</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">تعطیل</span>
+                                {% endif %}
+                            </div>
+                            <small class="text-muted">
+                                {% if item.is_open %}
+                                    {{ item.opens_at }} تا {{ item.closes_at }}
+                                {% else %}
+                                    بدون سرویس‌دهی
+                                {% endif %}
+                            </small>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
 
         <!-- Filters -->
         <div class="d-flex justify-content-center gap-3 mb-5 flex-wrap">
@@ -71,6 +113,11 @@
                                 <span class="fw-bold">{{ table.duration }} دقیقه</span>
                             </div>
 
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>👥 ظرفیت:</span>
+                                <span class="fw-bold">{{ table.capacity }} نفر</span>
+                            </div>
+
                             <div class="d-flex justify-content-between">
                                 <span>💰 قیمت هر نفر:</span>
                                 <span class="fw-bold price-text">
@@ -80,19 +127,41 @@
                         </div>
 
                         <!-- Reservation Form -->
+                        {% if user.is_authenticated %}
                         <form method="post"
                               action="{% url 'reserve_table' table.id %}"
-                              class="mt-auto">
+                              class="mt-auto reservation-form"
+                              data-duration="{{ table.duration }}">
                             {% csrf_token %}
 
                             <div class="mb-3">
                                 <label class="form-label small">
-                                    تاریخ و ساعت:
+                                    تعداد نفرات:
                                 </label>
-                                <input type="datetime-local"
-                                       name="reservation_datetime"
+                                <input type="number"
+                                       name="people_count"
+                                       min="1"
+                                       max="{{ table.capacity }}"
                                        class="form-control form-control-sm"
                                        required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small">تاریخ رزرو:</label>
+                                <select name="reservation_date"
+                                        class="form-select form-select-sm reservation-date"
+                                        required>
+                                    <option value="">انتخاب تاریخ</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small">ساعت رزرو:</label>
+                                <select name="reservation_time"
+                                        class="form-select form-select-sm reservation-time"
+                                        required>
+                                    <option value="">انتخاب ساعت</option>
+                                </select>
                             </div>
 
                             <button type="submit"
@@ -100,6 +169,11 @@
                                 رزرو میز
                             </button>
                         </form>
+                        {% else %}
+                            <a href="{% url 'user_login' %}" class="btn reserve-btn w-100 rounded-pill mt-auto">
+                                برای رزرو ابتدا وارد شوید
+                            </a>
+                        {% endif %}
 
                     </div>
                 </div>
@@ -119,5 +193,111 @@
 
     </div>
 </div>
+
+{{ working_hours|json_script:"working-hours-data" }}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const forms = document.querySelectorAll(".reservation-form");
+    const workingHours = JSON.parse(
+        document.getElementById("working-hours-data").textContent
+    );
+    const today = new Date();
+
+    function toMinutes(hhmm) {
+        const [h, m] = hhmm.split(":").map(Number);
+        return (h * 60) + m;
+    }
+
+    function formatMinutes(totalMinutes) {
+        const h = String(Math.floor(totalMinutes / 60)).padStart(2, "0");
+        const m = String(totalMinutes % 60).padStart(2, "0");
+        return `${h}:${m}`;
+    }
+
+    function getPythonWeekday(dateValue) {
+        const jsDate = new Date(`${dateValue}T00:00:00`);
+        const jsDay = jsDate.getDay(); // Sunday=0 ... Saturday=6
+        return (jsDay + 6) % 7; // Monday=0 ... Sunday=6
+    }
+
+    forms.forEach((form) => {
+        const dateSelect = form.querySelector(".reservation-date");
+        const timeSelect = form.querySelector(".reservation-time");
+        const duration = parseInt(form.dataset.duration || "30", 10);
+        const stepMinutes = duration > 0 ? duration : 30;
+
+        for (let i = 0; i < 14; i++) {
+            const d = new Date(today);
+            d.setDate(today.getDate() + i);
+
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, "0");
+            const dd = String(d.getDate()).padStart(2, "0");
+            const value = `${yyyy}-${mm}-${dd}`;
+
+            const opt = document.createElement("option");
+            opt.value = value;
+            opt.textContent = value;
+            dateSelect.appendChild(opt);
+        }
+
+        function populateTimes() {
+            timeSelect.innerHTML = '<option value="">انتخاب ساعت</option>';
+
+            const selectedDate = dateSelect.value;
+            if (!selectedDate) {
+                return;
+            }
+
+            const weekday = getPythonWeekday(selectedDate);
+            const dayConfig = workingHours[String(weekday)];
+            if (!dayConfig) {
+                const opt = document.createElement("option");
+                opt.value = "";
+                opt.textContent = "کافه در این روز تعطیل است";
+                timeSelect.appendChild(opt);
+                return;
+            }
+
+            const openMinutes = toMinutes(dayConfig.opens_at);
+            const closeMinutes = toMinutes(dayConfig.closes_at);
+            const latestStart = closeMinutes - duration;
+
+            const now = new Date();
+            const isToday = selectedDate === [
+                now.getFullYear(),
+                String(now.getMonth() + 1).padStart(2, "0"),
+                String(now.getDate()).padStart(2, "0")
+            ].join("-");
+
+            for (let minutes = openMinutes; minutes <= latestStart; minutes += stepMinutes) {
+                if (isToday) {
+                    const selectedDateTime = new Date(`${selectedDate}T${formatMinutes(minutes)}:00`);
+                    if (selectedDateTime <= now) {
+                        continue;
+                    }
+                }
+
+                const value = formatMinutes(minutes);
+                const opt = document.createElement("option");
+                opt.value = value;
+                opt.textContent = value;
+                timeSelect.appendChild(opt);
+            }
+
+            if (timeSelect.options.length === 1) {
+                const opt = document.createElement("option");
+                opt.value = "";
+                opt.textContent = "بازه قابل رزرو برای این تاریخ موجود نیست";
+                timeSelect.appendChild(opt);
+            }
+        }
+
+        dateSelect.addEventListener("change", populateTimes);
+        dateSelect.selectedIndex = dateSelect.options.length > 1 ? 1 : 0;
+        populateTimes();
+    });
+});
+</script>
 
 {% endblock %}
