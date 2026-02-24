@@ -1,0 +1,199 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap");
+
+/* ===============================
+   Base
+================================= */
+
+:root {
+  --clr-primary: darkorange;
+  --clr-secondary: #222;
+}
+
+body {
+  background: #fff3cd;
+  color: var(--clr-secondary);
+  font-family: "Josefin Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+/* ===============================
+   Product Detail Container
+================================= */
+
+.container.py-5 {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+}
+
+/* ===============================
+   Product Image
+================================= */
+
+.container img {
+  transition: transform 0.4s ease;
+}
+
+.container img:hover {
+  transform: scale(1.05);
+}
+
+/* ===============================
+   Size Section
+================================= */
+
+#size-buttons {
+  margin-bottom: 15px;
+}
+
+.size-badge {
+  display: inline-block;
+  padding: 6px 15px;
+  border-radius: 20px;
+  background-color: #ffe5d0;
+  color: #d2691e;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: 0.3s ease;
+}
+
+.size-badge:hover {
+  background-color: #ffb84d;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.size-badge.active {
+  background-color: #d2691e;
+  color: #fff;
+}
+
+/* ===============================
+   Price Section
+================================= */
+
+.old-price {
+  font-size: 18px;
+  color: #999;
+  text-decoration: line-through;
+  margin-bottom: 5px;
+}
+
+.new-price {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.text-danger {
+  font-weight: bold;
+}
+
+/* ===============================
+   Discount Box
+================================= */
+
+.discount-box {
+  position: relative;
+  display: inline-block;
+  background: #fff0e6;
+  color: #d35400;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.ribbon {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  background: linear-gradient(45deg, #ff6a00, #ffb347);
+  color: white;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* ===============================
+   Comments Section
+================================= */
+
+h4 {
+  font-weight: 700;
+  color: #333;
+}
+
+textarea.form-control {
+  border-radius: 15px;
+  padding: 15px;
+  border: 1px solid #eee;
+  transition: all 0.3s ease;
+}
+
+textarea.form-control:focus {
+  border-color: #ffb84d;
+  box-shadow: 0 0 10px rgba(255, 184, 77, 0.3);
+}
+
+/* Submit Button */
+
+#submit-btn {
+  border-radius: 12px;
+  padding: 8px 25px;
+  transition: 0.3s ease;
+}
+
+#submit-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Comment Cards */
+
+.border.p-3 {
+  background: #fffdfb;
+  border-radius: 15px !important;
+  transition: 0.3s ease;
+}
+
+.border.p-3:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* ===============================
+   Star Rating
+================================= */
+
+.star-rating {
+  font-size: 28px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.star {
+  color: #ddd;
+  transition: 0.2s ease;
+}
+
+.star:hover {
+  color: #ffc107;
+  transform: scale(1.2);
+}

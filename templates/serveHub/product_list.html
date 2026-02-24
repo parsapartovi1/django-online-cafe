@@ -38,41 +38,90 @@
         {% for product in products %}
         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
 
-            <div class="card product-card shadow-sm border-0">
+            <div class="card product-card shadow-sm border-0 position-relative">
 
-                {% if product.image %}
-                <div class="image-wrapper">
-                    <img src="{{ product.image.url }}"
-                         class="card-img-top"
-                         alt="{{ product.name }}">
+                <!-- ✅ Discount Badge (FROM ProductSize) -->
+               {% if product.size.has_active_discount %}
+                    <div class="discount-badge">
+                        {{ product.size.discount.amount }}%
+                    </div>
+                {% endif %}
+
+
+                <!-- Rating Badge -->
+                {% if product.get_average_rating %}
+                <div class="rating-badge">
+                    ⭐ {{ product.get_average_rating }}
                 </div>
                 {% endif %}
 
-                <div class="card-body text-center d-flex flex-column p-2">
+                <!-- CLICKABLE AREA -->
+                <a href="{% url 'product_detail' product.id %}"
+                   class="text-decoration-none text-dark">
 
-                    <h5 class="card-title mb-1">
-                        {{ product.name }}
-                    </h5>
+                    {% if product.image %}
+                    <div class="image-wrapper">
+                        <img src="{{ product.image.url }}"
+                             class="card-img-top"
+                             alt="{{ product.name }}">
+                    </div>
+                    {% endif %}
 
-                    <!-- Compact description -->
-                    <div class="product-description">
-                        {{ product.description }}
+                    <div class="card-body text-center d-flex flex-column p-2">
+
+                        <h5 class="card-title mb-1">
+                            {{ product.name }}
+                        </h5>
+
+                        <!-- Description -->
+                        <div class="product-description mb-2">
+                            {{ product.description }}
+                        </div>
+
+                        <!-- ✅ Sizes from ProductSize -->
+                        <div class="product-sizes mb-2">
+                            {% if product.size.size1 %}
+                                <span class="size-badge">{{ product.size.size1 }}</span>
+                            {% endif %}
+                            {% if product.size.size2 %}
+                                <span class="size-badge">{{ product.size.size2 }}</span>
+                            {% endif %}
+                            {% if product.size.size3 %}
+                                <span class="size-badge">{{ product.size.size3 }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- ✅ Price Section FROM ProductSize -->
+                        {% if product.size.get_discount_percent > 0 %}
+                            <p class="text-muted mb-0"
+                               style="text-decoration: line-through;">
+                                {{ product.size.price1|intcomma }} تومان
+                            </p>
+
+                            <p class="fw-bold text-danger">
+                                {{ product.size.get_final_price1|intcomma }} تومان
+                            </p>
+                        {% else %}
+                            <p class="fw-bold">
+                                {{ product.size.price1|intcomma }} تومان
+                            </p>
+                        {% endif %}
+
                     </div>
 
-                    <p class="fw-bold mt-2 mb-2">
-                        {{ product.price|intcomma }} تومان
-                    </p>
+                </a>
 
+                <!-- ADD TO CART -->
+                <div class="p-2">
                     <form method="POST"
-                          action="{% url 'add_to_cart' product.id %}"
-                          class="mt-auto">
+                          action="{% url 'add_to_cart' product.id %}">
                         {% csrf_token %}
                         <button class="btn btn-warning w-100 add-btn">
                             افزودن به سبد خرید
                         </button>
                     </form>
-
                 </div>
+
             </div>
 
         </div>

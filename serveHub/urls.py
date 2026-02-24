@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import DiscountList, CategoryList, DiscountDetailView
 from . import views
-from user.views import create_comment
+from user.views import create_comment , delete_comment
 # app_name = 'serveHub'
 
 urlpatterns = [
@@ -19,4 +19,5 @@ urlpatterns = [
     path('reserve-table/<int:table_id>/', views.reserve_table, name='reserve_table'),
     path('product/<int:pk>/', views.ProductDetailView.as_view(), name='product_detail'),
     path('product/<int:product_id>/comment/', create_comment, name='create_comment'),
+path('comment/delete/<int:comment_id>/',delete_comment,name='delete_comment'),
 ]

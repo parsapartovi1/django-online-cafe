@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+<div class="player-container">
+
+    <!-- LEFT SIDE -->
+    <div class="player-left">
+        <div class="music-info">
+            <h1 id="musicTitle"></h1>
+            <h3 id="musicArtist"></h3>
+        </div>
+
+        <div class="controls">
+            <button onclick="prevSong()">⏮</button>
+            <button onclick="togglePlay()" id="playBtn">▶</button>
+            <button onclick="nextSong()">⏭</button>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="player-right">
+        <img id="cover" class="cover" alt="Cover">
+    </div>
+
+    <audio id="audio">
+        <source id="audio-source" type="audio/mpeg">
+    </audio>
+
+</div>
+
+<script>
+const songs = [
+    {
+        title: "Tiramisu",
+        artist: "Don Toliver",
+        src: "{% static 'music/Don Toliver - Tiramisu.mp3' %}",
+        cover: "{% static 'images/music_img/1.jpg' %}"
+    },
+    {
+        title: "No Pole",
+        artist: "Don Toliver",
+        src: "{% static 'music/Don Toliver - No Pole.mp3' %}",
+        cover: "{% static 'images/music_img/2.jpg' %}"
+    }
+];
+
+let currentSong = 0;
+
+const audio = document.getElementById("audio");
+const source = document.getElementById("audio-source");
+const cover = document.getElementById("cover");
+const title = document.getElementById("musicTitle");
+const artist = document.getElementById("musicArtist");
+const playBtn = document.getElementById("playBtn");
+
+function loadSong(index) {
+    source.src = songs[index].src;
+    cover.src = songs[index].cover;
+    title.textContent = songs[index].title;
+    artist.textContent = songs[index].artist;
+    audio.load();
+}
+
+function togglePlay() {
+    if (audio.paused) {
+        audio.play();
+        cover.classList.add("spin");
+        playBtn.innerText = "❚❚";
+    } else {
+        audio.pause();
+        cover.classList.remove("spin");
+        playBtn.innerText = "▶";
+    }
+}
+
+function nextSong() {
+    currentSong = (currentSong + 1) % songs.length;
+    loadSong(currentSong);
+    audio.play();
+    cover.classList.add("spin");
+    playBtn.innerText = "❚❚";
+}
+
+function prevSong() {
+    currentSong = (currentSong - 1 + songs.length) % songs.length;
+    loadSong(currentSong);
+    audio.play();
+    cover.classList.add("spin");
+    playBtn.innerText = "❚❚";
+}
+
+loadSong(currentSong);
+</script>
+
+{% endblock %}

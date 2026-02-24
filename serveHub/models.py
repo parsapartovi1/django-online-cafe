@@ -1,4 +1,99 @@
 from django.db import models
+from django.utils import timezone
+
+
+
+class ProductSize(models.Model):
+    name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+        default=''
+    )
+
+    size1 = models.CharField(
+        max_length=30,
+        help_text="Size according to the product",
+    )
+
+    price1 = models.DecimalField(
+        max_digits=10,
+        decimal_places=0
+    )
+
+    size2=models.CharField(
+        max_length=30,
+        help_text="other Size according to the product",
+        blank=True,
+        null=True
+    )
+    price2 = models.DecimalField(
+        max_digits=10,
+        decimal_places=0,
+        null=True,
+        blank=True
+
+    )
+    size3=models.CharField(
+        max_length=30,
+        help_text="other Size according to the product",
+        blank=True,
+        null=True
+    )
+    price3 = models.DecimalField(
+        max_digits=10,
+        decimal_places=0,
+        null=True,
+        blank=True
+    )
+
+    discount = models.ForeignKey(
+        'Discount',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    @property
+    def has_active_discount(self):
+        return (
+                self.discount and
+                self.discount.duration > timezone.now()
+        )
+
+    def get_final_price1(self):
+        if self.discount and self.discount.duration > timezone.now():
+            return int(self.price1 - (self.price1 * self.discount.amount / 100))
+        return int(self.price1)
+
+    def get_final_price2(self):
+        if self.price2 and self.has_active_discount:
+            return int(self.price2 - (self.price2 * self.discount.amount / 100))
+        return int(self.price2) if self.price2 else 0
+
+    def get_final_price3(self):
+        if self.price3 and self.discount and self.discount.duration > timezone.now():
+            return int(self.price3 - (self.price3 * self.discount.amount / 100))
+        return int(self.price3) if self.price3 else 0
+
+    def get_discount_percent(self):
+        if self.discount and self.discount.duration > timezone.now():
+            return self.discount.amount
+        return 0
+
+    last_update = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Last Update"
+    )
+
+    class Meta:
+        verbose_name = "Product Size"
+        verbose_name_plural = "ProductSize"
+
+    def __str__(self):
+        return f"{self.name} - sizes"
+
+
 
 class Product(models.Model):
     image = models.ImageField(
@@ -17,19 +112,14 @@ class Product(models.Model):
         null=False
     )
 
-    size = models.CharField(
-        max_length=50,
-        verbose_name="Size / Type",
-        help_text="e.g., single, double, small, medium, large",
-        default="single"
-    )
-
-    price = models.DecimalField(
-        max_digits=10,
-        decimal_places=0,
-        verbose_name="Price (Toman)",
-        help_text="Price in Toman",
-        default=0.0
+    size = models.ForeignKey(
+        ProductSize,
+        on_delete=models.CASCADE,
+        verbose_name="Product Size",
+        help_text="Select product size",
+        blank=True,
+        null=True,
+        related_name="main_product"
     )
 
     product_rate = models.FloatField(
@@ -45,14 +135,6 @@ class Product(models.Model):
         help_text="Select product category"
     )
 
-    discount = models.ForeignKey(
-        'Discount',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name="Discount",
-        help_text="Select discount if available"
-    )
 
     description = models.TextField(
         verbose_name="Description / Ingredients",
@@ -60,6 +142,14 @@ class Product(models.Model):
         blank=True,
         null=True
     )
+
+
+    def get_average_rating(self):
+        comments = self.comment_set.filter(is_delete=False)
+        if comments.exists():
+            return round(sum(c.com_rate for c in comments) / comments.count(), 1)
+        return 0.0
+
 
     created_date = models.DateTimeField(
         auto_now_add=True,
@@ -77,6 +167,8 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.size}"
+
+
 
 
 class Table(models.Model):

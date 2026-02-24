@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from .choices import WeekDays
 from django.conf import settings
 
+
 class User(models.Model):
     first_name = models.CharField(
         max_length=24,

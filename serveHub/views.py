@@ -5,9 +5,20 @@ from django.contrib import messages
 from django.views import View
 from .models import Product, Category, Table
 from user.models import Comment
+from django.utils import timezone
+from django.views.generic import ListView
+from .models import Product
+
 class DiscountList(ListView):
-    model = Discount
-    template_name = "discount_list.html"
+    model = Product
+    template_name = "serveHub/discount_list.html"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        return Product.objects.filter(
+            size__discount__isnull=False,
+            size__discount__duration__gt=timezone.now()
+        ).select_related("size", "size__discount")
 
 
 class DiscountDetailView(DetailView):
@@ -127,12 +138,6 @@ from django.shortcuts import redirect
 
 def reserve_table(request, table_id):
     if request.method == "POST":
-        # منطق ساخت رزرو اینجا
-
-        # مثلا:
-        # Reservation.objects.create(...)
-
-        return redirect('order_list')  # 👈 این مهمه
-
+        return redirect('order_list')
     return redirect('table_reservation')
 

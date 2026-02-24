@@ -21,6 +21,10 @@ urlpatterns = [
     path('working_shift/list/', views.list_working_shifts, name='list_working_shifts'),
 
     path('change-password/', ChangePasswordView.as_view(), name='change_password'),
+
+
+    path('music/', views.music_page, name='music_page'),
+
 ]
 
 

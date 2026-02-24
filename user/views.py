@@ -160,7 +160,18 @@ def product_comments(request):
         'comments': comments
     })
 
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Comment
 
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.user == comment.user:
+        comment.delete()
+
+    return redirect('product_detail', pk=comment.product.id)
 
 class AddReply(View):
     def get(self, request, comment_id):
@@ -236,3 +247,7 @@ def list_working_shifts(request):
 
 
 
+
+
+def music_page(request):
+    return render(request, 'music_page.html')

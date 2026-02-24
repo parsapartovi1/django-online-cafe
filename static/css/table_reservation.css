@@ -1,22 +1,26 @@
-/* =========================
-   NAVBAR
-========================= */
-
-.navbar {
-    background-color: rgba(0, 0, 0, 0.8) !important;
+:root {
+  --clr-primary: darkorange;
+  --clr-secondary: black;
 }
-
-
 /* =========================
    PAGE BACKGROUND
 ========================= */
 
-.table-reservation-section {
-    background-color: #fff9f5;
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+
+html, body {
+    height: 100%;
+    margin: 0;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    background-color: #fff9f5;
+}
 
 /* =========================
    PAGE TITLE
@@ -25,7 +29,8 @@
 .table-reservation-title {
     color: #2c1810;
     border-bottom: 2px solid #8b5a2b;
-    padding-bottom: 15px;
+    padding-bottom: 12px;
+    display: inline-block;
 }
 
 
@@ -46,7 +51,7 @@
 
 .active-filter {
     background-color: #8b5a2b !important;
-    color: white !important;
+    color: #ffffff !important;
 }
 
 
@@ -55,39 +60,38 @@
 ========================= */
 
 .table-reservation-card {
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .table-reservation-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 
 /* Card image */
+
 .table-card-img {
     height: 200px;
     object-fit: cover;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
 }
 
-/* Placeholder image */
+
+/* Placeholder */
+
 .table-placeholder {
     height: 200px;
     background: linear-gradient(135deg, #f0e4d8, #e8d5c5);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
 }
 
 .table-placeholder span {
-    color: #8b5a2b;
     font-size: 3rem;
+    color: #8b5a2b;
 }
 
 
@@ -101,11 +105,12 @@
 
 .table-badge {
     background-color: #d4a574;
-    color: white;
+    font-size: 0.75rem;
 }
 
 .price-text {
-    color: #198754; /* Bootstrap success green */
+    color: #198754;
+    font-weight: 600;
 }
 
 
@@ -113,16 +118,14 @@
    FORM
 ========================= */
 
-.form-select,
 .form-control {
-    border: 1px solid #e0d6cc;
     border-radius: 8px;
+    border: 1px solid #e0d6cc;
 }
 
-.form-select:focus,
 .form-control:focus {
     border-color: #8b5a2b;
-    box-shadow: 0 0 0 0.2rem rgba(139, 90, 43, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(139, 90, 43, 0.2);
 }
 
 
@@ -134,6 +137,7 @@
     background-color: #8b5a2b;
     color: white;
     border: none;
+    padding: 8px 0;
     transition: background-color 0.3s ease;
 }
 

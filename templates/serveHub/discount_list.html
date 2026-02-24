@@ -1,83 +1,66 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
+{% block title %}تخفیف‌ها | کافه ماریبا{% endblock %}
 
-{% block title %}تخفیف‌های ویژه | قهوه ماریبا{% endblock %}
-{% block content %}
-<div class="container py-5">
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/discount/discount_list_cards.css' %}">
+{% endblock %}
 
-   <div class="discount-header text-center mb-5 position-relative overflow-hidden rounded-bottom-4">
-    <div class="header-overlay"></div>
+{% block content %}
 
-    <h1 class="discount-title display-4 fw-bold position-relative">
-        تخفیف‌های ویژه
-    </h1>
+<div class="discount-wrapper">
 
-    <p class="discount-subtitle lead position-relative mt-3">
-        بهترین فرصت‌ها برای لذت بیشتر از قهوه و دسرهای ماریبا
-    </p>
-</div>
+    <div class="container py-5">
 
-    {% if discounted_products %}
+        <h2 class="text-center discount-title mb-5">
+            🎁 تخفیف‌های ویژه امروز
+        </h2>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <div class="row g-4 justify-content-center">
 
-            {% for discount in discounted_products %}
+            {% for product in products %}
+            <div class="col-6 col-md-4 col-lg-3">
 
-                <div class="col">
-                    <a href="{% url 'discount-detail' discount.pk %}" class="text-decoration-none">
-                        <div class="discount-card h-100">
+                <a href="{% url 'product_detail' product.pk %}"
+                   class="text-decoration-none">
 
-                            <div class="card-image position-relative">
-                                {% if discount.product.image %}
-                                    <img src="{{ discount.product.image.url }}" alt="{{ discount.product.name }}" loading="lazy">
-                                {% else %}
-                                    <div class="no-image-placeholder">
-                                        <i class="bi bi-gift-fill"></i>
-                                    </div>
-                                {% endif %}
+                    <div class="discount-card">
 
-                                <div class="discount-percentage">
-                                    {{ discount.amount }}<span class="fs-5">%</span>
-                                </div>
-                            </div>
-
-                            <div class="card-body text-center">
-                                <h5 class="card-title mb-3">{{ discount.product.name }}</h5>
-
-                                
-
-                                {% if discount.duration %}
-                                    <div class="expiry small text-muted">
-                                        تا {{ discount.duration|date:"j F Y" }}
-                                    </div>
-                                {% endif %}
-                            </div>
-
-                            <div class="card-footer bg-transparent border-0 text-center pb-4">
-                                <span class="btn btn-outline-danger btn-sm px-4 rounded-pill">
-                                    مشاهده جزئیات
-                                </span>
-                            </div>
-
+                        <div class="discount-ribbon">
+                            {{ product.size.discount.amount }}٪
                         </div>
-                    </a>
-                </div>
 
+                        <div class="gift-circle">
+                            🎁
+                        </div>
+
+                        <div class="discount-content text-center">
+                            <h6 class="fw-bold mb-2">
+                                {{ product.size.discount.amount }}٪ تخفیف
+                            </h6>
+                            <p class="mb-0 small">
+                                برای {{ product.name }}
+                            </p>
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+            {% empty %}
+            <div class="col-12 text-center">
+                <div class="no-discount-box">
+                    📭 در حال حاضر تخفیفی فعال نیست
+                </div>
+            </div>
             {% endfor %}
 
         </div>
 
-    {% else %}
-
-        <div class="text-center py-5 my-5">
-            <i class="bi bi-percent display-1 text-muted opacity-50"></i>
-            <h4 class="mt-4 text-muted">در حال حاضر تخفیف فعالی وجود ندارد</h4>
-            <p class="text-muted">به زودی تخفیف‌های جذاب اضافه خواهد شد...</p>
-        </div>
-
-    {% endif %}
+    </div>
 
 </div>
 

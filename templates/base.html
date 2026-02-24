@@ -41,9 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+
 <body>
 
-<!-- Navbar -->
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm px-4" style="background-color: transparent;">
     <div class="container-fluid">
@@ -121,13 +121,13 @@ document.addEventListener("DOMContentLoaded", function () {
                      height="30">
             </a>
 
-            <!-- Comments -->
-            <a href="{% url 'product_comments' %}" class="me-3">
-                <img src="{% static 'images/nav_access/333.png' %}"
-                     alt="Comments"
+            <!-- Music player -->
+              <a href="{% url 'music_page' %}" class="me-3">
+                <img src="{% static 'images/nav_access/1000.png' %}"
+                     alt="Music Player"
                      width="30"
                      height="30">
-            </a>
+              </a>
 
             <!-- Working Shifts -->
             <a href="{% url 'list_working_shifts' %}">
@@ -152,95 +152,4 @@ document.addEventListener("DOMContentLoaded", function () {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 
-
-
-
-<div class="music-player">
-    <img id="cover" src="{% static 'images/music_img' %}" class="cover" alt="">
-
-    <audio id="audio" >
-        <source id="audio-source" src="{% static 'music' %}" type="audio/mpeg">
-    </audio>
-
-    <div class="music-info">
-        <h3 id="musicTitle"></h3>
-        <p id="musicArtist"></p>
-    </div>
-
-    <div class="controls">
-        <button onclick="prevSong()">⏭</button>
-        <button onclick="togglePlay()" id="playBtn">▶︎</button>
-        <button onclick="nextSong()">⏮</button>
-    </div>
-
-
-</div>
-</body>
-<script>
-const songs = [
-    {
-        title: "Tiramisu",
-        artist: "Don Toliver",
-        src: "{% static 'music/Don Toliver - Tiramisu.mp3' %}",
-        cover: "{% static 'images/music_img/1.jpg' %}"
-    },
-    {
-        title: "No Pole",
-        artist: "Don Toliver",
-        src: "{% static 'music/Don Toliver - No Pole.mp3' %}",
-        cover: "{% static 'images/music_img/2.jpg' %}"
-    }
-];
-
-let currentSong = 0;
-
-const audio = document.getElementById("audio");
-const source = document.getElementById("audio-source");
-const cover = document.getElementById("cover");
-const title = document.getElementById("musicTitle");
-const artist = document.getElementById("musicArtist");
-const playBtn = document.getElementById("playBtn");
-
-function loadSong(index) {
-    source.src = songs[index].src;
-    cover.src = songs[index].cover;
-    title.textContent = songs[index].title;
-    artist.textContent = songs[index].artist;
-    audio.load();
-}
-
-function togglePlay() {
-    if (audio.paused) {
-        audio.play();
-        cover.classList.add("spin");
-        playBtn.innerText = "❚❚";
-    } else {
-        audio.pause();
-        cover.classList.remove("spin");
-        playBtn.innerText = "▶︎";
-    }
-}
-
-function nextSong() {
-    currentSong = (currentSong + 1) % songs.length;
-    loadSong(currentSong);
-    audio.play();
-    cover.classList.add("spin");
-    playBtn.innerText = "❚❚";
-}
-
-function prevSong() {
-    currentSong = (currentSong - 1 + songs.length) % songs.length;
-    loadSong(currentSong);
-    audio.play();
-    cover.classList.add("spin");
-    playBtn.innerText = "❚❚";
-}
-
-// Load first song on page load
-loadSong(currentSong);
-</script>
-
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
