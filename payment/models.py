@@ -1,15 +1,13 @@
-
-# Create your models here.
-
-
-#only payment transaction and orders .
-# orders ---> parsa
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
 from serveHub.models import Product
 from serveHub.models import Table
+
+
+# Create your models here.
+
 
 class Order(models.Model):
     user = models.ForeignKey(

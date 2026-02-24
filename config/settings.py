@@ -53,8 +53,6 @@ LOCALE_APPS=[
     'payment'
 ]
 
-
-
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
