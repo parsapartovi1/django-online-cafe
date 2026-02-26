@@ -213,32 +213,3 @@ class Reply(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} to {self.comment.user.first_name}"
-
-class WorkingShift(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        verbose_name='user'
-    )
-
-    weekdays = models.CharField(
-        max_length=24,
-        choices=WeekDays.choices,
-        verbose_name='weekday',
-    )
-
-    opening_date = models.DateTimeField(
-        verbose_name='opening date',
-        help_text='Enter your opening date'
-    )
-
-    closed_date = models.DateTimeField(
-        verbose_name='closed date',
-        help_text='Enter your close date'
-    )
-
-    class Meta:
-        verbose_name = "4. Working Shift"
-
-    def __str__(self):
-        return f"{self.weekdays} - {self.opening_date} - {self.closed_date}"

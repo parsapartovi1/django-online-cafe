@@ -123,11 +123,6 @@ class Product(models.Model):
         related_name="main_product"
     )
 
-    product_rate = models.FloatField(
-        default=0.0,
-        verbose_name="Product Rating",
-        help_text="Average rating of the product"
-    )
 
     category = models.ForeignKey(
         'Category',

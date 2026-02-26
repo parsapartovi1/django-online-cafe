@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import Comment, Reply, User, WorkingShift
+from .models import Comment, Reply, User
 # Register your models here.
 
 
@@ -44,4 +44,4 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(Comment)
 admin.site.register(Reply)
-admin.site.register(WorkingShift)
+

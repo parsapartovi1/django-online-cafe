@@ -16,7 +16,7 @@ from django.views import View
 
 from serveHub.models import CafeWorkingHour, Product
 
-from .models import Comment, Reply, WorkingShift
+from .models import Comment, Reply
 
 User = get_user_model()
 
